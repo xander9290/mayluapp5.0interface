@@ -334,7 +334,7 @@ function MonitorVentaModal({ show, onHide }) {
         setResumen(true);
       }
     } else {
-      //abrirCajon();
+      await abrirCajon();
       setResumen(true);
     }
   };
