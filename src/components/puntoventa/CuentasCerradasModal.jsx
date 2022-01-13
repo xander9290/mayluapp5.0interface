@@ -10,7 +10,7 @@ const initialFecha = {
   fecha1: fechaActual(Date.now()),
   fecha2: fechaActual(Date.now()),
 };
-const url = "http://localhost:3100/cuentas";
+const url = "/cuentas";
 function CuentasCerradasModal({ show, onHide }) {
   const { updateCuenta, initialCuenta, cargarCuentas } = useContext(AppContext);
 

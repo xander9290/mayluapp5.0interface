@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import routes from "../routes";
 
-const url = "http://localhost:3100/categorias";
+const url = "/categorias";
 function useCategorias() {
   const [categorias, setCategorias] = useState([]);
 

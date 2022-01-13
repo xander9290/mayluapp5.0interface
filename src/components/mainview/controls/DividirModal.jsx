@@ -130,7 +130,7 @@ function DividirModal({ show, onHide }) {
       ...initialCuenta,
       servicio: cuenta.servicio,
       torreta,
-      cliente: cuenta.clienteId,
+      clienteId: cuenta.clienteId,
       items: lista2,
       cashInfo: {
         ...cuenta.cashInfo,

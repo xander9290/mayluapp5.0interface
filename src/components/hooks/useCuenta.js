@@ -29,7 +29,7 @@ const initialCuenta = {
   obs: "",
 };
 
-const url = "http://localhost:3100/cuentas";
+const url = "/cuentas";
 function useCuenta() {
   const [cuentas, setCuentas] = useState([]);
   const [cuenta, setCuenta] = useState(initialCuenta);

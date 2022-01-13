@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import routes from "../routes";
 
-const url = "http://localhost:3100/productos";
+const url = "/productos";
 function useProductos() {
   const [productos, setProductos] = useState([]);
 

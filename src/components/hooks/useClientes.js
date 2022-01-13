@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import routes from "../routes";
 
-const url = "http://localhost:3100/clientes";
+const url = "/clientes";
 function useClientes() {
   const [clientes, setClientes] = useState([]);
 

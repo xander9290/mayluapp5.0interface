@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import routes from "../routes";
 
-const url = "http://localhost:3100/operadores";
+const url = "/operadores";
 function useOperador() {
   const [operadores, setOperadores] = useState([]);
   const [session, setSession] = useState({
