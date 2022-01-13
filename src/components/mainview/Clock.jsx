@@ -13,7 +13,7 @@ function Clock() {
     }, 1000);
   }, []);
 
-  const logOut = () => {
+  const logOut = async () => {
     if (!window.confirm("confirmar acción".toUpperCase())) return;
     setSession({ login: false, operador: null, rol: null });
   };

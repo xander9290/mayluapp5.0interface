@@ -1,5 +1,6 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AppContext } from "../../contexts/AppContext";
+import { fechaActual } from "../../../helpers";
 
 const initialCaja = {
   tipo: "",
@@ -7,8 +8,8 @@ const initialCaja = {
   importe: 0,
   createdBy: "",
 };
-function CajaForm() {
-  const { createCaja } = useContext(AppContext);
+function CajaForm({ setXcaja }) {
+  const { createCaja, session } = useContext(AppContext);
   const [caja, setCaja] = useState(initialCaja);
 
   const handleCaja = (e) =>
@@ -16,6 +17,15 @@ function CajaForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newCaja = {
+      ...caja,
+      createdBy: session.operador,
+      fecha: fechaActual(Date.now()),
+    };
+    createCaja(newCaja, (res) => {
+      setCaja(initialCaja);
+      setXcaja(res);
+    });
   };
 
   const cancelar = () => {
@@ -53,6 +63,7 @@ function CajaForm() {
             onChange={handleCaja}
             placeholder="Concepto"
             required
+            autoComplete="off"
             className="form-control form-control-lg"
           />
         </div>
@@ -73,18 +84,14 @@ function CajaForm() {
         </div>
       </div>
       <div className="card-footer p-1">
-        <button
-          title="AGREGAR"
-          className="btn btn-primary btn-lg me-2"
-          type="submit"
-        >
+        <button title="AGREGAR" className="btn btn-primary me-2" type="submit">
           <i className="bi bi-plus-circle me-2"></i>
-          Agregar
+          Guardar
         </button>
         <button
           onClick={cancelar}
           title="CANCELAR"
-          className="btn btn-warning btn-lg"
+          className="btn btn-warning"
           type="reset"
         >
           <i className="bi bi-x-circle me-2"></i>

@@ -33,6 +33,7 @@ function AppProvider({ children }) {
     deleteOperador,
     session,
     setSession,
+    exitProcess,
   } = useOperador();
   const {
     cuentas,
@@ -78,6 +79,7 @@ function AppProvider({ children }) {
     deleteOperador,
     session,
     setSession,
+    exitProcess,
     // Cuentas
     cuentas,
     createCuenta,

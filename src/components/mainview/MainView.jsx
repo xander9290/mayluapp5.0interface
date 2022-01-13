@@ -6,12 +6,28 @@ import CuentasContainer from "./CuentasContainer";
 import LoginForm from "../admin/operadores/LoginForm";
 
 function MainView() {
-  const { session } = useContext(AppContext);
+  const { session, exitProcess } = useContext(AppContext);
   const [loginForm, setLoginForm] = useState(true);
 
   useEffect(() => {
     if (!session.login) setLoginForm(true);
   }, [session]);
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", function (e) {
+      e.preventDefault();
+      e.returnValue = "";
+    });
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+    return () => {
+      window.removeEventListener("beforeunload", function (e) {
+        e.preventDefault();
+        e.returnValue = "";
+      });
+      document.removeEventListener("contextmenu", (e) => e.preventDefault());
+    };
+  }, []);
   return (
     <React.Fragment>
       <Nav />

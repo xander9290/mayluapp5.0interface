@@ -3,14 +3,14 @@ import { AppContext } from "../contexts/AppContext";
 import { fechaActual, formatoFecha } from "../../helpers";
 import routes from "../routes";
 import { Modal } from "react-bootstrap";
-import ComandaModal from "./controls/modalstickets/ComandaModal";
-import NotaCliente from "./controls/modalstickets/NotaCliente";
+import ComandaModal from "../mainview/controls/modalstickets/ComandaModal";
+import NotaCliente from "../mainview/controls/modalstickets/NotaCliente";
 
 const initialFecha = {
   fecha1: fechaActual(Date.now()),
   fecha2: fechaActual(Date.now()),
 };
-const url = "/cuentas";
+const url = "http://localhost:3100/cuentas";
 function CuentasCerradasModal({ show, onHide }) {
   const { updateCuenta, initialCuenta, cargarCuentas } = useContext(AppContext);
 

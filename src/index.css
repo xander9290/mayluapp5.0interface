@@ -125,5 +125,9 @@ body {
 }
 .caja-modal {
   margin-top: 1.5% !important;
-  max-width: 75% !important;
+  max-width: 85% !important;
+}
+.monitor-venta-modal {
+  margin-top: 2% !important;
+  max-width: 70% !important;
 }

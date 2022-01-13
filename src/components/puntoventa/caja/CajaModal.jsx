@@ -1,11 +1,29 @@
+import { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 
 import CajaForm from "./CajaForm";
 import CajaTable from "./CajaTable";
+import CajaTicket from "./CajaTicket";
 
+const initialCaja = {
+  tipo: "",
+  concepto: "",
+  importe: 0,
+  createdBy: "",
+};
 function CajaModal({ show, onHide }) {
+  const [xcaja, setXcaja] = useState(initialCaja);
+  const [cajaTicket, setCajaTicket] = useState(false);
+
+  useEffect(() => {
+    if (xcaja._id) {
+      setCajaTicket(true);
+    }
+  }, [xcaja]);
   const handleShow = () => {};
-  const handleExited = () => {};
+  const handleExited = () => {
+    setXcaja(initialCaja);
+  };
   return (
     <Modal
       onHide={onHide}
@@ -27,14 +45,21 @@ function CajaModal({ show, onHide }) {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-4 p-1">
-            <CajaForm />
+          <div className="col-md-3 p-1">
+            <CajaForm setXcaja={setXcaja} />
           </div>
-          <div className="col-md-8 p-1">
-            <CajaTable />
+          <div className="col-md-9 p-1">
+            <CajaTable setXcaja={setXcaja} />
           </div>
         </div>
       </div>
+      <CajaTicket
+        show={cajaTicket}
+        onHide={() => setCajaTicket(false)}
+        caja={xcaja}
+        initialCaja={initialCaja}
+        setCaja={setXcaja}
+      />
     </Modal>
   );
 }

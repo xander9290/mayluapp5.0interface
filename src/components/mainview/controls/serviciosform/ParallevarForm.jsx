@@ -60,6 +60,8 @@ function ParallevarForm({ show, onHide, setCapturaForm }) {
           setTimeout(() => {
             setCapturaForm();
           }, 200);
+        } else {
+          alert("error al crear la orden".toUpperCase());
         }
       });
     }

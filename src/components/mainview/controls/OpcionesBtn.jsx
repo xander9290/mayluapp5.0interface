@@ -76,10 +76,6 @@ function OpcionesBtn({ targetAsignarRep }) {
       );
       return;
     }
-    if (cuenta.servicio === "domicilio") {
-      alert("no disponible para este servicio".toUpperCase());
-      return;
-    }
     setDividirModal(true);
   };
 

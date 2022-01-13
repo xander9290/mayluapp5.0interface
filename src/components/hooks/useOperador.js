@@ -40,6 +40,10 @@ function useOperador() {
       .catch((error) => console.log(error));
   };
 
+  const exitProcess = async () => {
+    await routes.post(url + "/exit");
+  };
+
   const updateOperador = (id, body) => {
     routes
       .put(url + "/" + id, body)
@@ -72,6 +76,7 @@ function useOperador() {
     deleteOperador,
     session,
     setSession,
+    exitProcess,
   };
 }
 

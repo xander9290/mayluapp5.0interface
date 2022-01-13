@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AppContext } from "../../contexts/AppContext";
 
-import CuentasCerradasModal from "../CuentasCerradasModal";
-import CajaModal from "../caja/CajaModal";
+import CuentasCerradasModal from "../../puntoventa/CuentasCerradasModal";
+import CajaModal from "../../puntoventa/caja/CajaModal";
+import LoginMonitorModal from "../../puntoventa/monitorventa/LoginMonitorModal";
+import MonitorVentaModal from "../../puntoventa/monitorventa/MonitorVentaModal";
 
 function PuntoVentaItem() {
+  const { session } = useContext(AppContext);
   const [cuentasCerradas, setCuentasCerradas] = useState(false);
   const [caja, setCaja] = useState(false);
+  const [loginMonitor, setLoginMonitor] = useState(false);
+  const [monitor, setMonitor] = useState(false);
 
   const targetCuentasCerradas = () => {
     setCuentasCerradas(true);
@@ -13,6 +19,14 @@ function PuntoVentaItem() {
 
   const targetCajaModal = () => {
     setCaja(true);
+  };
+
+  const targetLoginMonitor = () => {
+    if (session.rol !== "master") {
+      alert("!acceso denegado!\noperador no autorizado".toUpperCase());
+      return;
+    }
+    setLoginMonitor(true);
   };
 
   return (
@@ -51,7 +65,11 @@ function PuntoVentaItem() {
           </a>
         </li>
         <li>
-          <a href="#" className="dropdown-item fs-5 py-2">
+          <a
+            onClick={targetLoginMonitor}
+            href="#"
+            className="dropdown-item fs-5 py-2"
+          >
             Monitor de Ventas
           </a>
         </li>
@@ -61,6 +79,12 @@ function PuntoVentaItem() {
         onHide={() => setCuentasCerradas(false)}
       />
       <CajaModal show={caja} onHide={() => setCaja(false)} />
+      <LoginMonitorModal
+        show={loginMonitor}
+        onHide={() => setLoginMonitor(false)}
+        setMonitor={setMonitor}
+      />
+      <MonitorVentaModal show={monitor} onHide={() => setMonitor(false)} />
     </li>
   );
 }
