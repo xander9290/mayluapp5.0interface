@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import routes from "../routes";
 
 const url = "/caja";
+const puerto = "8080";
+const nombreImpresora = "maylu_printer";
 function useCaja() {
   const [cajas, setCajas] = useState([]);
 
   useEffect(async () => {
     const data = await routes.get(url);
     setCajas(data);
+    await startCajonPlugin();
   }, []);
 
   const createCaja = async (body, cb) => {
@@ -29,7 +32,23 @@ function useCaja() {
     }
   };
 
-  return { cajas, createCaja, deleteCaja };
+  const startCajonPlugin = async () => {
+    await routes.post(url + "/starcajonplugin");
+  };
+
+  const abrirCajon = async () => {
+    const respuesta = await fetch(
+      `http://localhost:${puerto}/?impresora=${nombreImpresora}`
+    );
+    const respuestaDecodificada = await respuesta.json();
+    if (respuesta.status === 200) {
+      console.log("Cajón abierto");
+    } else {
+      console.log("Error abriendo: " + respuestaDecodificada);
+    }
+  };
+
+  return { cajas, createCaja, deleteCaja, abrirCajon };
 }
 
 export default useCaja;

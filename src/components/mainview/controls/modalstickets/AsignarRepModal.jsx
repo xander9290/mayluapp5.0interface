@@ -8,7 +8,8 @@ const initialRepartidor = {
   hasRepartidor: false,
 };
 function AsignarRepModal({ show, onHide, showNotaCliente }) {
-  const { cuenta, updateCuenta, operadores } = useContext(AppContext);
+  const { cuenta, updateCuenta, operadores, abrirCajon } =
+    useContext(AppContext);
   const inputEfectivo = useRef();
 
   const [repartidor, setRepartidor] = useState(initialRepartidor);
@@ -39,9 +40,9 @@ function AsignarRepModal({ show, onHide, showNotaCliente }) {
         repartidor: repartidor.repartidor,
         estado: "pendiente",
       };
-      updateCuenta(cuenta._id, newCuenta, (res) => {
+      updateCuenta(cuenta._id, newCuenta, async (res) => {
         if (res) {
-          // if(cambio>0) abrirCajon()
+          if (cambio > 0) await abrirCajon();
           onHide();
           showNotaCliente();
         }

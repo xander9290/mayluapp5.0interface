@@ -33,6 +33,7 @@ function MonitorVentaModal({ show, onHide }) {
     otrosMedios: md,
     cajas: xcajas,
     session,
+    abrirCajon,
   } = useContext(AppContext);
   const [fecha, setFecha] = useState(initialFecha);
   const [productosCancelados, setProductosCancelados] = useState([]);
@@ -320,7 +321,7 @@ function MonitorVentaModal({ show, onHide }) {
     setOtroMedio(otrosMedios);
   };
 
-  const targetResumen = () => {
+  const targetResumen = async () => {
     if (porPagar > 0) {
       if (
         !window.confirm(
@@ -329,7 +330,7 @@ function MonitorVentaModal({ show, onHide }) {
       ) {
         return;
       } else {
-        //abrirCajon();
+        await abrirCajon();
         setResumen(true);
       }
     } else {
@@ -523,7 +524,7 @@ function MonitorVentaModal({ show, onHide }) {
             <button
               type="button"
               className="btn btn-primary btn-lg mb-2"
-              onClick={targetResumen}
+              onClick={async () => await targetResumen()}
             >
               <i className="bi bi-printer h4 me-2"></i> Resumen
             </button>

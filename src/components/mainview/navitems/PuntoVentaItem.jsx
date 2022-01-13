@@ -7,7 +7,7 @@ import LoginMonitorModal from "../../puntoventa/monitorventa/LoginMonitorModal";
 import MonitorVentaModal from "../../puntoventa/monitorventa/MonitorVentaModal";
 
 function PuntoVentaItem() {
-  const { session } = useContext(AppContext);
+  const { session, abrirCajon } = useContext(AppContext);
   const [cuentasCerradas, setCuentasCerradas] = useState(false);
   const [caja, setCaja] = useState(false);
   const [loginMonitor, setLoginMonitor] = useState(false);
@@ -29,6 +29,10 @@ function PuntoVentaItem() {
     setLoginMonitor(true);
   };
 
+  const targetAbrirCajon = async () => {
+    await abrirCajon();
+  };
+
   return (
     <li className="nav-item dropdown">
       <a
@@ -42,7 +46,11 @@ function PuntoVentaItem() {
       </a>
       <ul className="dropdown-menu">
         <li>
-          <a href="#" className="dropdown-item fs-5 py-2">
+          <a
+            onClick={async () => await targetAbrirCajon()}
+            href="#"
+            className="dropdown-item fs-5 py-2"
+          >
             Abrir Cajón
           </a>
         </li>

@@ -49,7 +49,7 @@ function AppProvider({ children }) {
   const { otrosMedios, createMedio, deleteMedio } = useOtrosMedios();
   const { settings, changeNotaNegocioSettings, changeNotaClienteSettings } =
     useTickets();
-  const { cajas, createCaja, deleteCaja } = useCaja();
+  const { cajas, createCaja, deleteCaja, abrirCajon } = useCaja();
   const data = {
     //   Categorias
     categorias,
@@ -102,6 +102,7 @@ function AppProvider({ children }) {
     cajas,
     createCaja,
     deleteCaja,
+    abrirCajon,
   };
   return <AppContext.Provider value={data}>{children}</AppContext.Provider>;
 }

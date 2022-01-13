@@ -20,7 +20,7 @@ const initialMedios = {
 };
 
 function PagarModal({ show, onHide, showNotaCliente }) {
-  const { cuenta, updateCuenta, reiniciarCuenta, otrosMedios } =
+  const { cuenta, updateCuenta, reiniciarCuenta, otrosMedios, abrirCajon } =
     useContext(AppContext);
 
   const inputEfectivo = useRef();
@@ -114,17 +114,17 @@ function PagarModal({ show, onHide, showNotaCliente }) {
       time: timeAgo(new Date(cuenta.createdAt)),
     };
     if (cuenta.servicio === "domicilio") {
-      updateCuenta(cuenta._id, newCuenta, (res) => {
+      updateCuenta(cuenta._id, newCuenta, async (res) => {
         if (res) {
-          // abrirCajon()
+          await abrirCajon();
           onHide();
           reiniciarCuenta();
         }
       });
     } else {
-      updateCuenta(cuenta._id, newCuenta, (res) => {
+      updateCuenta(cuenta._id, newCuenta, async (res) => {
         if (res) {
-          // abrirCajon()
+          await abrirCajon();
           if (imprimir) showNotaCliente();
           onHide();
           reiniciarCuenta();

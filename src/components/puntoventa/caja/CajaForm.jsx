@@ -9,7 +9,7 @@ const initialCaja = {
   createdBy: "",
 };
 function CajaForm({ setXcaja }) {
-  const { createCaja, session } = useContext(AppContext);
+  const { createCaja, session, abrirCajon } = useContext(AppContext);
   const [caja, setCaja] = useState(initialCaja);
 
   const handleCaja = (e) =>
@@ -22,9 +22,10 @@ function CajaForm({ setXcaja }) {
       createdBy: session.operador,
       fecha: fechaActual(Date.now()),
     };
-    createCaja(newCaja, (res) => {
+    createCaja(newCaja, async (res) => {
       setCaja(initialCaja);
       setXcaja(res);
+      await abrirCajon();
     });
   };
 
