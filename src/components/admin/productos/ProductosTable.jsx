@@ -114,7 +114,8 @@ function ProductosTable({ setProducto }) {
           </thead>
           <tbody>
             {listaProductos.map((producto) => {
-              let categoria, subcategoria;
+              let categoria = { name: "", fondo: "#FFFFFF" },
+                subcategoria = { name: "" };
               let findSubcategoria = subcategorias.find(
                 (sub) => sub._id === producto.subcategoriaId
               );

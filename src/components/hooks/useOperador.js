@@ -57,7 +57,8 @@ function useOperador() {
   };
 
   const deleteOperador = async (id) => {
-    if (id === "61c41e4febfb09c8211a3053") return;
+    // if (id === "61c41e4febfb09c8211a3053") return;
+    if (operadores.length === 1) return;
     if (!window.confirm("Confirmar Acción")) return;
     const data = await routes.delete(url + "/" + id);
     if (data) {
