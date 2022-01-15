@@ -148,7 +148,7 @@ function DeclaracionModal({
           </div>
         </div>
         <div className="row justify-content-center">
-          <div className="col-md-6 p-1">
+          <div className="col-md-5 p-1">
             <form className="card" onSubmit={handleSubmit}>
               <div className="card-header p-1 d-flex justify-content-between align-items-end">
                 <h5 className="card-title">Efectivo Físico</h5>
