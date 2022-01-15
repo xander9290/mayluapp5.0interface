@@ -410,7 +410,7 @@ function DeclaracionModal({
               </div>
             </form>
           </div>
-          {/* <div className="col-md-3 p-1">
+          <div className="col-md-3 p-1">
             <div className="card">
               <div className="card-header p-1">
                 <h5 className="card-title text-center">Diferencia</h5>
@@ -432,7 +432,7 @@ function DeclaracionModal({
                 </ul>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </Modal>
