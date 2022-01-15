@@ -103,10 +103,10 @@ function CardCuenta({ cuenta, selectCuenta, setIdx, idx }) {
             className="list-group text-center fs-5"
             role="button"
           >
-            <li className="list-group-item text-nowrap border-0 bg-white text-dark">
+            <li className="list-group-item text-nowrap border-0 bg-white text-dark px-0">
               {cuenta.servicio === "domicilio" || cuenta.servicio === "pll" ? (
                 <React.Fragment>
-                  <span className="fw-bold">cliente: </span>
+                  <span className="fw-bold">cnte: </span>
                   {cuenta.torreta}
                 </React.Fragment>
               ) : (

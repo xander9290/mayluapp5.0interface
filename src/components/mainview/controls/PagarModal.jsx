@@ -55,14 +55,16 @@ function PagarModal({ show, onHide, showNotaCliente }) {
   });
 
   const handleEfectivo = (e) => {
-    if (isNaN(e.target.value)) return;
-    setEfectivo({ ...efectivo, [e.target.name]: e.target.value });
+    let value = e.target.value;
+    if (isNaN(value) || value === "") value = 0;
+    setEfectivo({ ...efectivo, [e.target.name]: parseInt(value) });
     setError(null);
   };
 
   const handleTarjeta = (e) => {
-    if (isNaN(e.target.value)) return;
-    setTarjeta({ ...tarjeta, [e.target.name]: e.target.value });
+    let value = e.target.value;
+    if (isNaN(value) || value === "") value = 0;
+    setTarjeta({ ...tarjeta, [e.target.name]: parseInt(value) });
     setError(null);
   };
 

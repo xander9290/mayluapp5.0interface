@@ -35,6 +35,7 @@ function DetalladoModal({ show, onHide, fecha, productos, operador }) {
                 text-align: right;
               }
             </style>`);
+    w.document.title = "detallado de productos".toUpperCase();
     w.document.write(printContents);
     w.document.close();
     w.focus();

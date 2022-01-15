@@ -164,6 +164,7 @@ function NavAside() {
       >
         pagar
       </button>
+      <OpcionesBtn targetAsignarRep={targetAsignarRep} />
       <button
         onClick={reabrir}
         type="button"
@@ -172,7 +173,6 @@ function NavAside() {
       >
         reabrir
       </button>
-      <OpcionesBtn targetAsignarRep={targetAsignarRep} />
       <button
         type="button"
         onClick={cancelar}

@@ -4,7 +4,7 @@ import { Modal } from "react-bootstrap";
 
 const initialRepartidor = {
   repartidor: "",
-  efectivo: "",
+  efectivo: 0,
   hasRepartidor: false,
 };
 function AsignarRepModal({ show, onHide, showNotaCliente }) {

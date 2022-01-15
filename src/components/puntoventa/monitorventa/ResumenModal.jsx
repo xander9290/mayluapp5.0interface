@@ -12,6 +12,9 @@ function ResumenModal({
   tarjetas,
   otroMedio,
   operador,
+  declaracionEfectivo,
+  totalDeclarado,
+  totalEfectivo,
 }) {
   const setImpresion = () => {
     const printContents = document.getElementById("body").innerHTML,
@@ -29,7 +32,27 @@ function ResumenModal({
             #title {
                 text-aling: center;
             }
+            table {
+              width: 100%;
+          }
+          table tbody tr td {
+              font-size: 17px;
+          }
+          table thead tr th {
+            text-align: center;
+          }
+          table tbody tr {
+              padding: 0;
+          }
+          td:first-child {
+            text-align: center
+        }
+        td:last-child p {
+          width: 55%;
+          text-align: right;
+        }
           </style>`);
+    w.document.title = "resumen de venta".toUpperCase();
     w.document.write(printContents);
     w.document.close();
     w.focus();
@@ -92,7 +115,7 @@ function ResumenModal({
             {caja.retiros.qty.map((gasto, i) => (
               <div key={i * 2}>
                 <h4>
-                  {gasto.tipo}: concepto: {gasto.concepto} -${gasto.importe}
+                  {gasto.tipo}-concepto: {gasto.concepto} -${gasto.importe}
                 </h4>
                 <p>-------------------------------------</p>
               </div>
@@ -102,7 +125,7 @@ function ResumenModal({
             {caja.depositos.qty.map((deposito, i) => (
               <div key={i * 3}>
                 <h4>
-                  {deposito.tipo}: concepto: {deposito.concepto} +$
+                  {deposito.tipo}-concepto: {deposito.concepto} +$
                   {deposito.importe}
                 </h4>
                 <p>-------------------------------------</p>
@@ -154,15 +177,12 @@ function ResumenModal({
             <h4>total otros medios: ${otroMedio.total}</h4>
             <hr></hr>
           </div>
-          <h2>
-            efectivo: $
-            {servicios.comedor.total +
-              servicios.pll.total +
-              servicios.domicilio.total +
-              caja.depositos.total -
-              caja.retiros.total -
-              tarjetas.total -
-              otroMedio.total}
+          <h2
+            style={{
+              display: totalDeclarado > 0 ? "none" : "block",
+            }}
+          >
+            efectivo: ${totalEfectivo}
           </h2>
           <div style={{ display: descuentos.length > 0 ? "block" : "none" }}>
             <hr></hr>
@@ -221,6 +241,147 @@ function ResumenModal({
                 <p>-------------------------------------</p>
               </div>
             ))}
+          </div>
+          {/* declaración de cajero */}
+          <div
+            style={{
+              display: totalDeclarado > 0 ? "block" : "none",
+            }}
+          >
+            <h3>DECLARACIÓN DE CAJERO</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>denominación</th>
+                  <th>cantidad</th>
+                  <th>importe</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  style={{
+                    visibility:
+                      declaracionEfectivo.mil.importe > 0 ? "" : "collapse",
+                  }}
+                >
+                  <td>$100</td>
+                  <td>{declaracionEfectivo.mil.qty}</td>
+                  <td>${declaracionEfectivo.mil.importe}</td>
+                </tr>
+                <tr
+                  style={{
+                    visibility:
+                      declaracionEfectivo.quinientos.importe > 0
+                        ? ""
+                        : "collapse",
+                  }}
+                >
+                  <td>$500</td>
+                  <td>{declaracionEfectivo.quinientos.qty}</td>
+                  <td>${declaracionEfectivo.quinientos.importe}</td>
+                </tr>
+                <tr
+                  style={{
+                    visibility:
+                      declaracionEfectivo.doscientos.importe > 0
+                        ? ""
+                        : "collapse",
+                  }}
+                >
+                  <td>$200</td>
+                  <td>{declaracionEfectivo.doscientos.qty}</td>
+                  <td>${declaracionEfectivo.doscientos.importe}</td>
+                </tr>
+                <tr
+                  style={{
+                    visibility:
+                      declaracionEfectivo.cien.importe > 0 ? "" : "collapse",
+                  }}
+                >
+                  <td>$100</td>
+                  <td>{declaracionEfectivo.cien.qty}</td>
+                  <td>${declaracionEfectivo.cien.importe}</td>
+                </tr>
+                <tr
+                  style={{
+                    visibility:
+                      declaracionEfectivo.cincuenta.importe > 0
+                        ? ""
+                        : "collapse",
+                  }}
+                >
+                  <td>$50</td>
+                  <td>{declaracionEfectivo.cincuenta.qty}</td>
+                  <td>${declaracionEfectivo.cincuenta.importe}</td>
+                </tr>
+                <tr
+                  style={{
+                    visibility:
+                      declaracionEfectivo.veinte.importe > 0 ? "" : "collapse",
+                  }}
+                >
+                  <td>$20</td>
+                  <td>{declaracionEfectivo.veinte.qty}</td>
+                  <td>${declaracionEfectivo.veinte.importe}</td>
+                </tr>
+                <tr
+                  style={{
+                    visibility:
+                      declaracionEfectivo.diez.importe > 0 ? "" : "collapse",
+                  }}
+                >
+                  <td>$10</td>
+                  <td>{declaracionEfectivo.diez.qty}</td>
+                  <td>${declaracionEfectivo.diez.importe}</td>
+                </tr>
+                <tr
+                  style={{
+                    visibility:
+                      declaracionEfectivo.cinco.importe > 0 ? "" : "collapse",
+                  }}
+                >
+                  <td>$5</td>
+                  <td>{declaracionEfectivo.cinco.qty}</td>
+                  <td>${declaracionEfectivo.cinco.importe}</td>
+                </tr>
+                <tr
+                  style={{
+                    visibility:
+                      declaracionEfectivo.dos.importe > 0 ? "" : "collapse",
+                  }}
+                >
+                  <td>$2</td>
+                  <td>{declaracionEfectivo.dos.qty}</td>
+                  <td>${declaracionEfectivo.dos.importe}</td>
+                </tr>
+                <tr
+                  style={{
+                    visibility:
+                      declaracionEfectivo.peso.importe > 0 ? "" : "collapse",
+                  }}
+                >
+                  <td>$1</td>
+                  <td>{declaracionEfectivo.peso.qty}</td>
+                  <td>${declaracionEfectivo.peso.importe}</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>-------------------------------------</p>
+            <h4>
+              <p>
+                Total Efectivo: ${totalDeclarado} <span> </span>
+                <span
+                  style={{
+                    visibility:
+                      totalDeclarado === totalEfectivo ? "hidden" : "",
+                  }}
+                >
+                  Dif: {totalDeclarado > totalEfectivo ? "(+)" : "(-)"}$
+                  {Math.abs(totalEfectivo - totalDeclarado)}
+                </span>
+              </p>
+            </h4>
+            <hr></hr>
           </div>
         </div>
       </Modal.Body>

@@ -261,6 +261,7 @@ function DomicilioForm({ show, onHide, setCapturaForm }) {
                             className="form-control form-control-lg mb-1"
                             type="text"
                             name="name"
+                            maxLength="15"
                             ref={inputNameRef}
                             value={cliente.name}
                             onChange={handleCliente}

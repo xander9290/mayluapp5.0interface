@@ -6,6 +6,7 @@ import { Modal } from "react-bootstrap";
 
 import ResumenModal from "./ResumenModal";
 import DetalladoModal from "./DetalladoModal";
+import DeclaracionModal from "./DeclaracionModal";
 
 const initialFecha = {
   fecha1: fechaActual(Date.now()),
@@ -23,6 +24,18 @@ const initCajas = {
 const initProductosDetallado = {
   items: [],
   miscelaneos: [],
+};
+const initDeclaracionEfectivo = {
+  mil: { qty: 0, importe: 0 },
+  quinientos: { qty: 0, importe: 0 },
+  doscientos: { qty: 0, importe: 0 },
+  cien: { qty: 0, importe: 0 },
+  cincuenta: { qty: 0, importe: 0 },
+  veinte: { qty: 0, importe: 0 },
+  diez: { qty: 0, importe: 0 },
+  cinco: { qty: 0, importe: 0 },
+  dos: { qty: 0, importe: 0 },
+  peso: { qty: 0, importe: 0 },
 };
 const initOTrosMedios = { total: 0, qty: [], list: [] };
 const initTarjetas = { total: 0, qty: [] };
@@ -52,6 +65,29 @@ function MonitorVentaModal({ show, onHide }) {
   );
   const [resumen, setResumen] = useState(false);
   const [detallado, setDetallado] = useState(false);
+  const [declaracion, setDeclaracion] = useState(false);
+  const [ventaTotal, setVentaTotal] = useState(0);
+  const [totalEfectivo, setTotalEfectivo] = useState(0);
+  const [declaracionEfectivo, setDeclaracionEfectivo] = useState(
+    initDeclaracionEfectivo
+  );
+  const [totalDeclarado, setTotalDeclarado] = useState(0);
+
+  useEffect(() => {
+    let venta =
+      servicios.comedor.total + servicios.pll.total + servicios.domicilio.total;
+    setVentaTotal(venta);
+
+    let efectivo =
+      servicios.comedor.total +
+      servicios.pll.total +
+      servicios.domicilio.total +
+      cajas.depositos.total -
+      cajas.retiros.total -
+      tarjetas.total -
+      otroMedio.total;
+    setTotalEfectivo(efectivo);
+  });
 
   const handleFecha = (e) => {
     setFecha({ ...fecha, [e.target.name]: e.target.value });
@@ -226,7 +262,7 @@ function MonitorVentaModal({ show, onHide }) {
         list.push(newItem);
       }
     });
-    // se ordenan los productos por orden alfabético
+    // se ordenan los productos por mas vendido
     const listSort = list.sort((a, b) => {
       if (a.cant > b.cant) return -1;
     });
@@ -330,11 +366,11 @@ function MonitorVentaModal({ show, onHide }) {
       ) {
         return;
       } else {
-        await abrirCajon();
+        // await abrirCajon();
         setResumen(true);
       }
     } else {
-      await abrirCajon();
+      // await abrirCajon();
       setResumen(true);
     }
   };
@@ -343,11 +379,17 @@ function MonitorVentaModal({ show, onHide }) {
     setDetallado(true);
   };
 
+  const targetDeclaracion = () => {
+    setDeclaracion(true);
+  };
+
   const handleShow = () => {
     fetchCuentas(fecha.fecha1, fecha.fecha2);
   };
   const handleExited = () => {
     setFecha(initialFecha);
+    setTotalDeclarado(0);
+    setDeclaracionEfectivo(initDeclaracionEfectivo);
   };
   return (
     <Modal
@@ -461,21 +503,12 @@ function MonitorVentaModal({ show, onHide }) {
                 </ul>
               </div>
               <div className="card-footer p-0">
-                <ul className="list-group">
+                {/* <ul className="list-group">
                   <li className="list-group-item text-uppercase bg-primary fs-5">
                     <span className="fw-bold">total efectivo: </span>
-                    <span>
-                      $
-                      {servicios.comedor.total +
-                        servicios.pll.total +
-                        servicios.domicilio.total +
-                        cajas.depositos.total -
-                        cajas.retiros.total -
-                        tarjetas.total -
-                        otroMedio.total}
-                    </span>
+                    <span>${totalEfectivo}</span>
                   </li>
-                </ul>
+                </ul> */}
               </div>
             </div>
           </div>
@@ -507,23 +540,18 @@ function MonitorVentaModal({ show, onHide }) {
                       {servicios.domicilio.ctas.length}
                     </span>
                   </li>
-                  <li className="list-group-item text-uppercase bg-warning text-dark fs-5">
+                  <li className="list-group-item text-uppercase bg-warning text-dark fs-5 px-1">
                     <span className="fw-bold">venta total: </span>
-                    <span>
-                      $
-                      {servicios.comedor.total +
-                        servicios.pll.total +
-                        servicios.domicilio.total}
-                    </span>
+                    <span>${ventaTotal}</span>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <div className="col-md-2 p-0 py-1">
+          <div className="col-md-2 p-0 py-1 d-grid gap-2">
             <button
               type="button"
-              className="btn btn-primary btn-lg mb-2"
+              className="btn btn-primary btn-lg"
               onClick={async () => await targetResumen()}
             >
               <i className="bi bi-printer h4 me-2"></i> Resumen
@@ -534,6 +562,14 @@ function MonitorVentaModal({ show, onHide }) {
               onClick={targetDetallado}
             >
               <i className="bi bi-printer h4 me-2"></i> Detallado
+            </button>
+            <button
+              type="button"
+              disabled={totalDeclarado > 0 ? true : false}
+              className="btn btn-primary btn-lg"
+              onClick={targetDeclaracion}
+            >
+              Declaración
             </button>
           </div>
         </div>
@@ -548,6 +584,9 @@ function MonitorVentaModal({ show, onHide }) {
           tarjetas={tarjetas}
           otroMedio={otroMedio}
           operador={session.operador}
+          declaracionEfectivo={declaracionEfectivo}
+          totalDeclarado={totalDeclarado}
+          totalEfectivo={totalEfectivo}
         />
         <DetalladoModal
           show={detallado}
@@ -555,6 +594,15 @@ function MonitorVentaModal({ show, onHide }) {
           fecha={fecha}
           productos={productosDetallado}
           operador={session.operador}
+        />
+        <DeclaracionModal
+          show={declaracion}
+          onHide={() => setDeclaracion(false)}
+          declaracionEfectivo={declaracionEfectivo}
+          setDeclaracionEfectivo={setDeclaracionEfectivo}
+          totalDeclarado={totalDeclarado}
+          setTotalDeclarado={setTotalDeclarado}
+          totalEfectivo={totalEfectivo}
         />
       </div>
     </Modal>

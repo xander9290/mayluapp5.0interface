@@ -7,7 +7,7 @@ function Nav() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-success py-1">
       <div className="container-fluid">
         <span className="navbar-brand border border-2 rounded px-1 bg-dark">
-          MAyLu App
+          MAYLU App
         </span>
         <ul className="navbar-nav">
           <PuntoVentaItem />
