@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import routes from "../routes";
 
-const url = "/subcategorias";
+let url;
+if (process.env.NODE_ENV === "development") {
+  url = "http://localhost:3100/subcategorias";
+} else {
+  url = "/subcategorias";
+}
 function useSubcategorias() {
   const [subcategorias, setSubcategorias] = useState([]);
 

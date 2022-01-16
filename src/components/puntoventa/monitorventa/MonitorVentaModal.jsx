@@ -39,7 +39,13 @@ const initDeclaracionEfectivo = {
 };
 const initOTrosMedios = { total: 0, qty: [], list: [] };
 const initTarjetas = { total: 0, qty: [] };
-const url = "http://localhost:3100/cuentas";
+
+let url;
+if (process.env.NODE_ENV === "development") {
+  url = "http://localhost:3100/cuentas";
+} else {
+  url = "/cuentas";
+}
 function MonitorVentaModal({ show, onHide }) {
   const {
     productos: ps,
@@ -366,11 +372,11 @@ function MonitorVentaModal({ show, onHide }) {
       ) {
         return;
       } else {
-        // await abrirCajon();
+        await abrirCajon();
         setResumen(true);
       }
     } else {
-      // await abrirCajon();
+      await abrirCajon();
       setResumen(true);
     }
   };

@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import routes from "../routes";
 
-const url = "/caja";
+let url;
+if (process.env.NODE_ENV === "development") {
+  url = "http://localhost:3100/caja";
+} else {
+  url = "/caja";
+}
 const puerto = "8080";
 const nombreImpresora = "maylu_printer";
 function useCaja() {

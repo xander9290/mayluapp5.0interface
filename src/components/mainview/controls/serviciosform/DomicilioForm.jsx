@@ -15,8 +15,12 @@ const initialCliente = {
   codigo: null,
   lastEdit: "",
 };
-
-const url = "/cuentas/cliente/";
+let url;
+if (process.env.NODE_ENV === "development") {
+  url = "http://localhost:3100/cuentas/cliente/";
+} else {
+  url = "/cuentas/cliente/";
+}
 function DomicilioForm({ show, onHide, setCapturaForm }) {
   const {
     cuenta,

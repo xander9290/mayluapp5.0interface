@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import routes from "../routes";
 
-const url = "/productos";
+let url;
+if (process.env.NODE_ENV === "development") {
+  url = "http://localhost:3100/productos";
+} else {
+  url = "/productos";
+}
 function useProductos() {
   const [productos, setProductos] = useState([]);
 

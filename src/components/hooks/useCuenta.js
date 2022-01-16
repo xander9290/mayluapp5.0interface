@@ -29,7 +29,12 @@ const initialCuenta = {
   obs: "",
 };
 
-const url = "/cuentas";
+let url;
+if (process.env.NODE_ENV === "development") {
+  url = "http://localhost:3100/cuentas";
+} else {
+  url = "/cuentas";
+}
 function useCuenta() {
   const [cuentas, setCuentas] = useState([]);
   const [cuenta, setCuenta] = useState(initialCuenta);
