@@ -41,6 +41,7 @@ function DomicilioForm({ show, onHide, setCapturaForm }) {
   const [listaClientes, setListaClientes] = useState([]);
   const [historial, setHistorial] = useState([]);
   const [editarCliente, setEditarCliente] = useState("none");
+  const [msg, setMsg] = useState(null);
 
   const handleCliente = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
@@ -48,9 +49,9 @@ function DomicilioForm({ show, onHide, setCapturaForm }) {
 
   const disableEnterKey = (e) => {
     if (e.key === "Enter") {
-      alert(
-        "La tecla enter está desactivada para este formuario".toUpperCase()
-      );
+      // alert(
+      //   "La tecla enter está desactivada para este formuario".toUpperCase()
+      // );
       e.preventDefault();
     }
   };
@@ -77,6 +78,9 @@ function DomicilioForm({ show, onHide, setCapturaForm }) {
   const handleBusqueda = (e) => {
     setBusqueda({ ...busqueda, [e.target.name]: e.target.value });
     setListaClientes([]);
+    setCliente(initialCliente);
+    setHistorial([]);
+    setMsg(null);
   };
 
   const handleSubmitBusqueda = (e) => {
@@ -90,8 +94,9 @@ function DomicilioForm({ show, onHide, setCapturaForm }) {
     if (findCliente.length > 0) {
       setListaClientes(findCliente);
     } else {
-      alert("cliente no encontrado".toUpperCase());
-      buscarRef.current.focus();
+      //alert("cliente no encontrado".toUpperCase());
+      setMsg("cliente no encontrado");
+      buscarRef.current.select();
     }
   };
 
@@ -166,6 +171,7 @@ function DomicilioForm({ show, onHide, setCapturaForm }) {
     setEditarCliente("none");
     setHistorial([]);
     setBusqueda({ entry: "" });
+    setMsg(null);
   };
   return (
     <Modal
@@ -370,11 +376,18 @@ function DomicilioForm({ show, onHide, setCapturaForm }) {
                       </form>
                     </div>
                     <div className="card-body p-1">
+                      {msg && (
+                        <div className="alert alert-danger text-center text-uppercase py-2">
+                          <strong>{msg}</strong>
+                        </div>
+                      )}
                       <div className="list-group">
                         {listaClientes.map((cliente) => (
                           <button
                             key={cliente._id}
-                            onClick={() => selectCliente(cliente._id)}
+                            onClick={async () =>
+                              await selectCliente(cliente._id)
+                            }
                             type="button"
                             className="list-group-item list-group-item-action d-flex justify-content-between mb-1"
                           >

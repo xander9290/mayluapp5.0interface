@@ -13,6 +13,9 @@ function ResumenModal({
   otroMedio,
   operador,
   declaracionEfectivo,
+  declaracionOtros,
+  totalDeclaradoOTros,
+  ventaTotal,
   totalDeclarado,
   totalEfectivo,
 }) {
@@ -249,6 +252,35 @@ function ResumenModal({
             }}
           >
             <h3>DECLARACIÓN DE CAJERO</h3>
+            <p
+              style={{
+                display: declaracionOtros.gastos > 0 ? "block" : "none",
+              }}
+            >
+              gastos: ${declaracionOtros.gastos}
+            </p>
+            <p
+              style={{
+                display: declaracionOtros.tarjetas > 0 ? "block" : "none",
+              }}
+            >
+              tarjetas: ${declaracionOtros.tarjetas}
+            </p>
+            <p
+              style={{
+                display: declaracionOtros.otrosMedios > 0 ? "block" : "none",
+              }}
+            >
+              otros medios: ${declaracionOtros.otrosMedios}
+            </p>
+            <p
+              style={{
+                display: declaracionOtros.vales > 0 ? "block" : "none",
+              }}
+            >
+              vales: ${declaracionOtros.vales}
+            </p>
+            <p>-------------------------------------</p>
             <table>
               <thead>
                 <tr>
@@ -368,18 +400,21 @@ function ResumenModal({
             </table>
             <p>-------------------------------------</p>
             <h4>
-              <p>
-                Total Efectivo: ${totalDeclarado} <span> </span>
-                <span
-                  style={{
-                    visibility:
-                      totalDeclarado === totalEfectivo ? "hidden" : "",
-                  }}
-                >
-                  Dif: {totalDeclarado > totalEfectivo ? "(+)" : "(-)"}$
-                  {Math.abs(totalEfectivo - totalDeclarado)}
-                </span>
+              <p style={{ textAlign: "right", marginRight: "25px" }}>
+                Total Efectivo: ${totalDeclarado}
               </p>
+              <p>-------------------------------------</p>
+              <div style={{ textAlign: "right", marginRight: "25px" }}>
+                <p>total Sistema: ${ventaTotal}</p>
+                <p>
+                  Dif:{" "}
+                  {totalDeclarado + totalDeclaradoOTros - ventaTotal > 0
+                    ? "+"
+                    : "-"}
+                  ${Math.abs(totalDeclarado + totalDeclaradoOTros - ventaTotal)}
+                </p>
+                <p>Total cajero: ${totalDeclarado + totalDeclaradoOTros}</p>
+              </div>
             </h4>
             <hr></hr>
           </div>

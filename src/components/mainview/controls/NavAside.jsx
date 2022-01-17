@@ -58,10 +58,10 @@ function NavAside() {
       alert("selecciona o abre una cuenta para continuar".toUpperCase());
       return;
     }
-    if (cuenta.cashInfo.total === 0) {
-      alert("orden sin productos".toUpperCase());
-      return;
-    }
+    // if (cuenta.cashInfo.total === 0) {
+    //   alert("orden sin productos".toUpperCase());
+    //   return;
+    // }
     setComandaModal(true);
   };
 

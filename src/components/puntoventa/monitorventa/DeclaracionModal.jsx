@@ -20,12 +20,17 @@ function DeclaracionModal({
   setDeclaracionEfectivo,
   totalDeclarado,
   setTotalDeclarado,
-  totalEfectivo,
+  declaracionOtros,
+  setDeclaracionOtros,
+  totalDeclaradoOTros,
+  setTotalDeclaradoOTros,
+  ventaTotal,
+  initDeclaracionOtros,
 }) {
   const inputMilRef = useRef();
   const [efectivo, setEfectivo] = useState(initialEfectivo);
-  const [diferencia, setDiferencia] = useState(0);
 
+  // proceso de efectivo
   useEffect(() => {
     const newDeclaracion = {
       ...declaracionEfectivo,
@@ -73,6 +78,7 @@ function DeclaracionModal({
     setDeclaracionEfectivo(newDeclaracion);
   }, [efectivo]);
 
+  // suma de efectivo
   useEffect(() => {
     let total =
       declaracionEfectivo.mil.importe +
@@ -86,10 +92,27 @@ function DeclaracionModal({
       declaracionEfectivo.dos.importe +
       declaracionEfectivo.peso.importe;
 
-    let dif = totalEfectivo - total;
     setTotalDeclarado(total);
-    setDiferencia(dif);
   }, [declaracionEfectivo]);
+
+  useEffect(() => {
+    let totalOtros =
+      declaracionOtros.gastos +
+      declaracionOtros.tarjetas +
+      declaracionOtros.otrosMedios +
+      declaracionOtros.vales;
+
+    setTotalDeclaradoOTros(totalOtros);
+  }, [declaracionOtros]);
+
+  const handleDeclaracionOtros = (e) => {
+    let value = e.target.value;
+    if (isNaN(value) || value === "") value = 0;
+    setDeclaracionOtros({
+      ...declaracionOtros,
+      [e.target.name]: parseInt(value),
+    });
+  };
 
   const handleEfectivo = (e) => {
     let value = e.target.value;
@@ -99,21 +122,29 @@ function DeclaracionModal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (totalDeclarado < totalEfectivo) {
+    const dif = totalDeclarado + totalDeclaradoOTros - ventaTotal;
+    if (dif > 0) {
+      onHide();
+    } else if (dif < 0) {
       if (
         !window.confirm(
-          `hay una diferencia negativa (-)$${
-            totalEfectivo - totalDeclarado
-          } en la declaración\n¿deseas continuar`.toUpperCase()
+          `hay una diferencia negativa de -$${Math.abs(
+            dif
+          )}\n¿deseas continuar?`.toUpperCase()
         )
-      )
+      ) {
         return;
+      } else {
+        onHide();
+      }
+    } else {
+      onHide();
     }
-    onHide();
   };
 
   const reiniciar = () => {
     setEfectivo(initialEfectivo);
+    setDeclaracionOtros(initDeclaracionOtros);
     inputMilRef.current.focus();
   };
 
@@ -151,7 +182,7 @@ function DeclaracionModal({
           <div className="col-md-5 p-1">
             <form className="card" onSubmit={handleSubmit}>
               <div className="card-header p-1 d-flex justify-content-between align-items-end">
-                <h5 className="card-title">Efectivo Físico</h5>
+                <h5 className="card-title">Efectivo</h5>
                 <button
                   disabled={totalDeclarado > 0 ? false : true}
                   type="submit"
@@ -410,26 +441,69 @@ function DeclaracionModal({
               </div>
             </form>
           </div>
-          <div className="col-md-3 p-1">
+          <div className="col-md-2 p-1">
+            {/* card gastos */}
             <div className="card">
               <div className="card-header p-1">
-                <h5 className="card-title text-center">Diferencia</h5>
+                <h5 className="card-title text-center">Gastos</h5>
               </div>
               <div className="card-body p-0">
-                <ul className="list-group">
-                  <li
-                    className={`list-group-item fs-5 text-center ${
-                      totalDeclarado < totalEfectivo
-                        ? "bg-danger"
-                        : "bg-success"
-                    }`}
-                  >
-                    {(() => {
-                      if (totalDeclarado > totalEfectivo) return "Excedente: ";
-                    })()}{" "}
-                    ${Math.abs(totalDeclarado - totalEfectivo)}
-                  </li>
-                </ul>
+                <input
+                  className="form-control fw-bold text-end"
+                  type="text"
+                  name="gastos"
+                  value={declaracionOtros.gastos}
+                  onChange={handleDeclaracionOtros}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+            {/* card tarjetas */}
+            <div className="card">
+              <div className="card-header p-1">
+                <h5 className="card-title text-center">Tarjetas</h5>
+              </div>
+              <div className="card-body p-0">
+                <input
+                  className="form-control fw-bold text-end"
+                  type="text"
+                  name="tarjetas"
+                  value={declaracionOtros.tarjetas}
+                  onChange={handleDeclaracionOtros}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+            {/* card otros medios */}
+            <div className="card">
+              <div className="card-header p-1">
+                <h5 className="card-title text-center">Medios</h5>
+              </div>
+              <div className="card-body p-0">
+                <input
+                  className="form-control fw-bold text-end"
+                  type="text"
+                  name="otrosMedios"
+                  value={declaracionOtros.otrosMedios}
+                  onChange={handleDeclaracionOtros}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+            {/* card otros vales */}
+            <div className="card">
+              <div className="card-header p-1">
+                <h5 className="card-title text-center">Vales</h5>
+              </div>
+              <div className="card-body p-0">
+                <input
+                  className="form-control fw-bold text-end"
+                  type="text"
+                  name="vales"
+                  value={declaracionOtros.vales}
+                  onChange={handleDeclaracionOtros}
+                  autoComplete="off"
+                />
               </div>
             </div>
           </div>

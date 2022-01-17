@@ -251,7 +251,7 @@ function PagarModal({ show, onHide, showNotaCliente }) {
                           type="text"
                           name="efectivo"
                           ref={inputEfectivo}
-                          className="form-control form-control-lg fw-bold"
+                          className="form-control form-control-lg fw-bold text-end"
                           value={efectivo.efectivo}
                           onChange={handleEfectivo}
                           required

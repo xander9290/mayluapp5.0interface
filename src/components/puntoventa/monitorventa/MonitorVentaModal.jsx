@@ -37,6 +37,12 @@ const initDeclaracionEfectivo = {
   dos: { qty: 0, importe: 0 },
   peso: { qty: 0, importe: 0 },
 };
+const initDeclaracionOtros = {
+  gastos: 0,
+  tarjetas: 0,
+  otrosMedios: 0,
+  vales: 0,
+};
 const initOTrosMedios = { total: 0, qty: [], list: [] };
 const initTarjetas = { total: 0, qty: [] };
 
@@ -77,7 +83,10 @@ function MonitorVentaModal({ show, onHide }) {
   const [declaracionEfectivo, setDeclaracionEfectivo] = useState(
     initDeclaracionEfectivo
   );
+  const [declaracionOtros, setDeclaracionOtros] =
+    useState(initDeclaracionOtros);
   const [totalDeclarado, setTotalDeclarado] = useState(0);
+  const [totalDeclaradoOTros, setTotalDeclaradoOTros] = useState(0);
 
   useEffect(() => {
     let venta =
@@ -372,11 +381,11 @@ function MonitorVentaModal({ show, onHide }) {
       ) {
         return;
       } else {
-        await abrirCajon();
+        // await abrirCajon();
         setResumen(true);
       }
     } else {
-      await abrirCajon();
+      // await abrirCajon();
       setResumen(true);
     }
   };
@@ -591,8 +600,11 @@ function MonitorVentaModal({ show, onHide }) {
           otroMedio={otroMedio}
           operador={session.operador}
           declaracionEfectivo={declaracionEfectivo}
+          declaracionOtros={declaracionOtros}
           totalDeclarado={totalDeclarado}
+          totalDeclaradoOTros={totalDeclaradoOTros}
           totalEfectivo={totalEfectivo}
+          ventaTotal={ventaTotal}
         />
         <DetalladoModal
           show={detallado}
@@ -608,7 +620,12 @@ function MonitorVentaModal({ show, onHide }) {
           setDeclaracionEfectivo={setDeclaracionEfectivo}
           totalDeclarado={totalDeclarado}
           setTotalDeclarado={setTotalDeclarado}
-          totalEfectivo={totalEfectivo}
+          ventaTotal={ventaTotal}
+          declaracionOtros={declaracionOtros}
+          setDeclaracionOtros={setDeclaracionOtros}
+          totalDeclaradoOTros={totalDeclaradoOTros}
+          setTotalDeclaradoOTros={setTotalDeclaradoOTros}
+          initDeclaracionOtros={initDeclaracionOtros}
         />
       </div>
     </Modal>

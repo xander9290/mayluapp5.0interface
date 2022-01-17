@@ -87,7 +87,7 @@ function ParallevarForm({ show, onHide, setCapturaForm }) {
   };
 
   const handleShow = () => {
-    torretaInputRef.current.focus();
+    torretaInputRef.current.select();
     if (cuenta._id) {
       setPll({ ...pll, torreta: cuenta.torreta });
       const findCliente = clientes.find((c) => c._id === cuenta.clienteId);
