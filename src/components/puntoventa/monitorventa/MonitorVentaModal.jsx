@@ -381,11 +381,11 @@ function MonitorVentaModal({ show, onHide }) {
       ) {
         return;
       } else {
-        // await abrirCajon();
+        await abrirCajon();
         setResumen(true);
       }
     } else {
-      // await abrirCajon();
+      await abrirCajon();
       setResumen(true);
     }
   };
