@@ -130,6 +130,22 @@ function MonitorVentaModal({ show, onHide }) {
     }
   };
 
+  const cargarCuentas = async () => {
+    const data = await routes.get(url + "/abiertas");
+    if (data.length > 0) {
+      procesarCuentas(data);
+      const cjs = xcajas.filter((caja) => {
+        return caja.fecha >= fecha.fecha1 && caja.fecha <= fecha.fecha2;
+      });
+      procesarCaja(cjs);
+    } else {
+      setCajas(initCajas);
+      setServicios(initServicios);
+      setProductosDetallados(initProductosDetallado);
+      setPorPagar(0);
+    }
+  };
+
   const procesarCuentas = (ctas) => {
     const cuentasContables = ctas.filter(
       (cuenta) => cuenta.estado !== "cancelado"
@@ -400,6 +416,7 @@ function MonitorVentaModal({ show, onHide }) {
 
   const handleShow = () => {
     fetchCuentas(fecha.fecha1, fecha.fecha2);
+    //cargarCuentas();
   };
   const handleExited = () => {
     setFecha(initialFecha);

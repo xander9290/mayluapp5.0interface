@@ -4,8 +4,10 @@ import { Modal } from "react-bootstrap";
 
 const initialRepartidor = {
   repartidor: "",
-  efectivo: 0,
   hasRepartidor: false,
+};
+const initialEfectivo = {
+  efectivo: 0,
 };
 function AsignarRepModal({ show, onHide, showNotaCliente }) {
   const { cuenta, updateCuenta, operadores, abrirCajon } =
@@ -13,6 +15,7 @@ function AsignarRepModal({ show, onHide, showNotaCliente }) {
   const inputEfectivo = useRef();
 
   const [repartidor, setRepartidor] = useState(initialRepartidor);
+  const [efectivo, setEfectivo] = useState(initialEfectivo);
   const [repartidores, setRepartidores] = useState([]);
   const [error, setError] = useState(null);
 
@@ -21,11 +24,17 @@ function AsignarRepModal({ show, onHide, showNotaCliente }) {
     setError(null);
   };
 
+  const handleEfectivo = (e) => {
+    let value = e.target.value;
+    if (isNaN(value) || value === "") value = 0;
+    setEfectivo({ ...efectivo, [e.target.name]: parseInt(value) });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (cuenta.repartidor === "") {
-      const cambio = parseInt(repartidor.efectivo) - cuenta.cashInfo.total;
-      if (parseInt(repartidor.efectivo) < cuenta.cashInfo.total) {
+      const cambio = parseInt(efectivo.efectivo) - cuenta.cashInfo.total;
+      if (parseInt(efectivo.efectivo) < cuenta.cashInfo.total) {
         setError("monto incorrecto".toUpperCase());
         inputEfectivo.current.focus();
         return;
@@ -34,7 +43,7 @@ function AsignarRepModal({ show, onHide, showNotaCliente }) {
         ...cuenta,
         cashInfo: {
           ...cuenta.cashInfo,
-          efectivo: parseInt(repartidor.efectivo),
+          efectivo: parseInt(efectivo.efectivo),
           cambio,
         },
         repartidor: repartidor.repartidor,
@@ -114,13 +123,13 @@ function AsignarRepModal({ show, onHide, showNotaCliente }) {
         </div>
         <div className="row">
           <div className="col-md-12 p-1">
-            <form className="card bg-white" onSubmit={handleSubmit}>
+            <form className="card" onSubmit={handleSubmit}>
               <div className="card-header p-1 text-end">
                 <button type="submit" className="btn btn-warning btn-lg">
                   Imprimir
                 </button>
               </div>
-              <div className="card-body p-1 text-dark">
+              <div className="card-body p-1">
                 <div className="mb-3">
                   <label className="form-label h3">
                     Total A Pagar: ${cuenta.cashInfo.total}
@@ -134,9 +143,9 @@ function AsignarRepModal({ show, onHide, showNotaCliente }) {
                       type="text"
                       name="efectivo"
                       ref={inputEfectivo}
-                      className="form-control form-control-lg fw-bold"
-                      value={repartidor.efectivo}
-                      onChange={handleRepartidor}
+                      className="form-control form-control-lg fw-bolder fs-3 text-end"
+                      value={efectivo.efectivo}
+                      onChange={handleEfectivo}
                       required
                       autoComplete="off"
                       readOnly={repartidor.hasRepartidor}
@@ -153,7 +162,7 @@ function AsignarRepModal({ show, onHide, showNotaCliente }) {
                   cambio: $
                   {(() => {
                     const cambio =
-                      parseInt(repartidor.efectivo) - cuenta.cashInfo.total;
+                      parseInt(efectivo.efectivo) - cuenta.cashInfo.total;
                     return cambio < 0 || isNaN(cambio) ? "0" : cambio;
                   })()}
                 </div>
@@ -180,7 +189,7 @@ function AsignarRepModal({ show, onHide, showNotaCliente }) {
               </div>
               <div className="card-footer p-1">
                 <div
-                  style={{ height: "120px", overflowY: "auto" }}
+                  style={{ height: "100px", overflowY: "auto" }}
                   className="mb-2"
                 >
                   {repartidores.map((rep) => (
@@ -188,7 +197,7 @@ function AsignarRepModal({ show, onHide, showNotaCliente }) {
                       key={rep._id}
                       type="button"
                       onClick={() => selectRepartidor(rep.name)}
-                      className="btn btn-info btn-lg text-uppercase me-2 mb-2 text-dark fs-4"
+                      className="btn btn-warning btn-lg text-uppercase me-2 mb-2 fs-4 border border-white"
                     >
                       {rep.name}
                     </button>

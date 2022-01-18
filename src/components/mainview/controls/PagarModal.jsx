@@ -69,7 +69,12 @@ function PagarModal({ show, onHide, showNotaCliente }) {
   };
 
   const handleMedios = (e) => {
-    setMedios({ ...medios, [e.target.name]: e.target.value });
+    let value = e.target.value;
+    if (e.target.name === "medioTotal") {
+      if (isNaN(value) || value === "") value = 0;
+      parseInt(value);
+    }
+    setMedios({ ...medios, [e.target.name]: value });
     setError(null);
   };
 
@@ -193,7 +198,7 @@ function PagarModal({ show, onHide, showNotaCliente }) {
                 <h3 className="card-title">Cambio: ${cambio}</h3>
               </div>
               <div
-                style={{ height: "196px" }}
+                style={{ height: "250px" }}
                 className="card-body p-1 d-flex flex-column align-items-center"
               >
                 <nav>
@@ -234,13 +239,21 @@ function PagarModal({ show, onHide, showNotaCliente }) {
                   </div>
                 </nav>
                 <div className="tab-content">
+                  {error && (
+                    <div
+                      className="alert alert-danger p-1 text-center text-uppercase mt-2"
+                      role="alert"
+                    >
+                      <strong>{error}</strong>
+                    </div>
+                  )}
                   <div
                     className="tab-pane fade show active"
                     id="efectivo"
                     role="tabpanel"
                     aria-labelledby="efectivo"
                   >
-                    <div className="mb-2 text-center pt-3">
+                    <div className="mb-2 text-center mt-3">
                       <label className="form-label h3">Efectivo: </label>
                       <div
                         style={{ width: "200px" }}
@@ -251,7 +264,7 @@ function PagarModal({ show, onHide, showNotaCliente }) {
                           type="text"
                           name="efectivo"
                           ref={inputEfectivo}
-                          className="form-control form-control-lg fw-bold text-end"
+                          className="form-control form-control-lg fw-bold text-end fs-3"
                           value={efectivo.efectivo}
                           onChange={handleEfectivo}
                           required
@@ -280,7 +293,7 @@ function PagarModal({ show, onHide, showNotaCliente }) {
                           type="text"
                           name="tarjeta"
                           ref={inputTarjeta}
-                          className="form-control form-control-lg fw-bold"
+                          className="form-control form-control-lg fw-bold fs-3 text-end"
                           value={tarjeta.tarjeta}
                           onChange={handleTarjeta}
                           required
@@ -327,18 +340,13 @@ function PagarModal({ show, onHide, showNotaCliente }) {
                           type="text"
                           name="medioTotal"
                           onChange={handleMedios}
-                          className="form-control form-control-lg"
+                          className="form-control form-control-lg fw-bolder fs-3 text-end"
                           value={medios.medioTotal}
                           autoComplete="off"
                         />
                         <span className="input-group-text">.00</span>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div className="mb-1">
-                  <div className="form-text fs-5 fw-bold text-uppercase text-center text-danger">
-                    {error}
                   </div>
                 </div>
               </div>
