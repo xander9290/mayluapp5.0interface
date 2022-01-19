@@ -68,9 +68,9 @@ function DetalleCuenta({
           importe,
           total: totalConDscto,
         },
-        obs: `Cancelado ${_cant} ${list[idx].name}(#${
-          idx + 1
-        }), motivo: ${motivo}.\n${cuenta.obs}`,
+        // obs: `Cancelado ${_cant} ${list[idx].name}(#${
+        //   idx + 1
+        // }), motivo: ${motivo}.\n${cuenta.obs}`,
       };
       updateCuenta(cuenta._id, newCta, (res) => {
         console.log(res);
@@ -90,9 +90,9 @@ function DetalleCuenta({
           importe,
           total: totalConDscto,
         },
-        obs: `Cancelado ${cant} ${list[idx].name}(#${
-          idx + 1
-        }), motivo: ${motivo}.\n${cuenta.obs}`,
+        // obs: `Cancelado ${cant} ${list[idx].name}(#${
+        //   idx + 1
+        // }), motivo: ${motivo}.\n${cuenta.obs}`,
       };
       updateCuenta(cuenta._id, newCta, (res) => {
         if (res) console.log("ok");
@@ -132,7 +132,7 @@ function DetalleCuenta({
         dscto: 0,
         total: totalConDscto,
       },
-      obs: `Se descontó ${list[idx].name}(#${idx + 1}).\n${cuenta.obs}`,
+      // obs: `Se descontó ${list[idx].name}(#${idx + 1}).\n${cuenta.obs}`,
     };
     updateCuenta(cuenta._id, newCta, (res) => {
       if (res) console.log("ok");
@@ -140,7 +140,7 @@ function DetalleCuenta({
   };
 
   const targetCapturaModal = () => {
-    onHide();
+    //onHide();
     setTimeout(() => {
       capturaForm();
     }, 200);
@@ -421,7 +421,7 @@ function DetalleCuenta({
                   </tbody>
                 </table>
               </div>
-              <div className="card-footer p-1">
+              <div style={{ overflowX: "auto" }} className="card-footer p-1">
                 <div
                   className="alert alert-warning p-2 text-dark mb-1"
                   role="alert"

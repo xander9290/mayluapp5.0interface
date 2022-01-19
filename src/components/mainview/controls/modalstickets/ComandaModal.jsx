@@ -7,7 +7,6 @@ function ComandaModal({ show, onHide, cuenta }) {
   const { updateCuenta, settings, reiniciarCuenta } = useContext(AppContext);
 
   const setViewPrint = () => {
-    onHide();
     const printContents = document.getElementById("comandaVista").innerHTML,
       w = window.open("", "PRINT", "height=600,width=700");
 
@@ -95,6 +94,7 @@ function ComandaModal({ show, onHide, cuenta }) {
     w.focus();
     w.print();
     w.close();
+    //onHide();
     return true;
   };
 
@@ -127,15 +127,23 @@ function ComandaModal({ show, onHide, cuenta }) {
     setArea4([...a4]);
     //setAreas([...a1, ...a2, ...a3]);
   };
-  const handleExited = () => {
-    const newCta = {
-      ...cuenta,
-      impreso: true,
-    };
-    updateCuenta(cuenta._id, newCta, (res) => {
-      if (res) reiniciarCuenta();
-    });
+  const handleExited = () => {};
+
+  const handleShow = () => {
+    if (setViewPrint()) {
+      const newCta = {
+        ...cuenta,
+        impreso: true,
+      };
+      updateCuenta(cuenta._id, newCta, (res) => {
+        if (res) {
+          reiniciarCuenta();
+          onHide();
+        }
+      });
+    }
   };
+
   const renderArea1 = () => {
     if (settings.notaNegocio.areasVisibles.area1) {
       return (
@@ -295,7 +303,7 @@ function ComandaModal({ show, onHide, cuenta }) {
     <Modal
       onHide={onHide}
       show={show}
-      onShow={setViewPrint}
+      onShow={handleShow}
       onExited={handleExited}
       backdrop="static"
       keyboard="true"

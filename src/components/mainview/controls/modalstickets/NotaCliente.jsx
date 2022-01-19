@@ -17,7 +17,6 @@ function NotaCliente({ cuenta, show, onHide }) {
   const { clientes, settings, reiniciarCuenta } = useContext(AppContext);
 
   const setVista = () => {
-    onHide();
     const printContents = document.getElementById("comandaVista").innerHTML,
       w = window.open("", "PRINT", "height=600,width=700");
 
@@ -153,7 +152,7 @@ function NotaCliente({ cuenta, show, onHide }) {
   };
 
   const handleShow = () => {
-    setVista();
+    if (setVista()) onHide();
   };
 
   return (
