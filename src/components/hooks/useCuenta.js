@@ -38,6 +38,7 @@ if (process.env.NODE_ENV === "development") {
 function useCuenta() {
   const [cuentas, setCuentas] = useState([]);
   const [cuenta, setCuenta] = useState(initialCuenta);
+  const [idx, setIdx] = useState("");
 
   useEffect(async () => {
     await cargarCuentas();
@@ -75,15 +76,20 @@ function useCuenta() {
 
   const reiniciarCuenta = () => {
     setCuenta(initialCuenta);
+    setIdx("");
   };
 
   const selectCuenta = (id) => {
     let findCuenta;
     if (id) {
       findCuenta = cuentas.find((cuenta) => cuenta._id === id);
-      if (findCuenta) setCuenta(findCuenta);
+      if (findCuenta) {
+        setCuenta(findCuenta);
+        setIdx(id);
+      }
     } else {
       setCuenta(initialCuenta);
+      setIdx("");
     }
   };
 
@@ -97,6 +103,8 @@ function useCuenta() {
     selectCuenta,
     reiniciarCuenta,
     initialCuenta,
+    idx,
+    setIdx,
   };
 }
 

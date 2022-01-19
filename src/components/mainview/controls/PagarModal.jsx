@@ -19,7 +19,7 @@ const initialMedios = {
   medioName: "",
 };
 
-function PagarModal({ show, onHide, showNotaCliente }) {
+function PagarModal({ show, onHide, showNotaCliente, closeDetalle }) {
   const { cuenta, updateCuenta, reiniciarCuenta, otrosMedios, abrirCajon } =
     useContext(AppContext);
 
@@ -124,8 +124,9 @@ function PagarModal({ show, onHide, showNotaCliente }) {
       updateCuenta(cuenta._id, newCuenta, async (res) => {
         if (res) {
           await abrirCajon();
-          onHide();
           reiniciarCuenta();
+          closeDetalle();
+          onHide();
         }
       });
     } else {
@@ -133,8 +134,9 @@ function PagarModal({ show, onHide, showNotaCliente }) {
         if (res) {
           await abrirCajon();
           if (imprimir) showNotaCliente();
-          onHide();
           reiniciarCuenta();
+          closeDetalle();
+          onHide();
         }
       });
     }

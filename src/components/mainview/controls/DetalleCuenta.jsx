@@ -3,8 +3,16 @@ import { AppContext } from "../../contexts/AppContext";
 import { Modal } from "react-bootstrap";
 import { formatoFecha, fechaISO, procesarItems } from "../../../helpers";
 
-function DetalleCuenta({ show, onHide, capturaForm, showComandaModal, pagar }) {
-  const { updateCuenta, cuenta } = useContext(AppContext);
+function DetalleCuenta({
+  show,
+  onHide,
+  capturaForm,
+  showComandaModal,
+  pagar,
+  showDividirModal,
+  reabrir,
+}) {
+  const { updateCuenta, cuenta, reiniciarCuenta } = useContext(AppContext);
 
   const [itemsIdx, setItemsIdx] = useState(null);
 
@@ -144,13 +152,40 @@ function DetalleCuenta({ show, onHide, capturaForm, showComandaModal, pagar }) {
   };
 
   const targetPagar = () => {
-    onHide();
+    if (!cuenta.impreso) {
+      alert("es necesario imprimir la cuenta primero".toUpperCase());
+      return;
+    }
+    //onHide();
     pagar();
+  };
+
+  const setDescuento = () => {
+    if (cuenta.impreso) {
+      alert("la cuenta ya se encuntra impresa".toUpperCase());
+      return;
+    }
+    let porcentaje = window.prompt("Aplicar descuento en porcentaje %: ");
+    if (!porcentaje) return;
+    porcentaje = parseInt(porcentaje);
+    const { totalConDscto } = procesarItems(cuenta.items, porcentaje);
+    const newCta = {
+      ...cuenta,
+      cashInfo: {
+        ...cuenta.cashInfo,
+        dscto: porcentaje,
+        total: totalConDscto,
+      },
+    };
+    updateCuenta(cuenta._id, newCta, (res) => {
+      console.log("Descuento aplicado");
+    });
   };
 
   const handleShow = () => {};
   const handleExited = () => {
     setItemsIdx("");
+    reiniciarCuenta();
   };
   return (
     <Modal
@@ -175,23 +210,65 @@ function DetalleCuenta({ show, onHide, capturaForm, showComandaModal, pagar }) {
               type="button"
               className="btn btn-warning btn-lg text-uppercase text-dark fw-bold"
             >
-              capturar
+              <i className="bi bi-card-list"></i> capturar
             </button>
             <button
               onClick={targetComandaModal}
               type="button"
               className="btn btn-warning btn-lg text-uppercase text-dark fw-bold"
             >
-              imprimir
+              <i className="bi bi-printer"></i> imprimir
             </button>
-            <button
-              disabled={cuenta.impreso ? false : true}
-              onClick={targetPagar}
-              type="button"
-              className="btn btn-warning btn-lg text-uppercase text-dark fw-bold"
-            >
-              pagar
-            </button>
+            <div className="btn-group dropdown">
+              <button
+                type="button"
+                className="btn btn-warning dropdown-toggle text-uppercase btn-lg text-dark fw-bold"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                opciones
+              </button>
+              <ul className="dropdown-menu text-uppercase">
+                <li>
+                  <a
+                    onClick={targetPagar}
+                    className="dropdown-item fs-4 py-2"
+                    href="#"
+                  >
+                    <i className="bi bi-cash-coin me-2"></i> pagar
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={showDividirModal}
+                    className="dropdown-item fs-4 py-2"
+                    href="#"
+                  >
+                    <i className="bi bi-layout-split me-2"></i>
+                    dividir
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={reabrir}
+                    className="dropdown-item fs-4 py-2"
+                    href="#"
+                  >
+                    <i className="bi bi-arrow-repeat me-2"></i>
+                    reabrir
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={setDescuento}
+                    className="dropdown-item fs-4 py-3"
+                    href="#"
+                  >
+                    -(%) descuento
+                  </a>
+                </li>
+              </ul>
+            </div>
             <button className="btn btn-danger" type="button" onClick={onHide}>
               Cerrar
               <i className="bi bi-x-circle ms-2"></i>
@@ -212,7 +289,9 @@ function DetalleCuenta({ show, onHide, capturaForm, showComandaModal, pagar }) {
                     {cuenta.folio}
                   </li>
                   <li className="list-group-item px-1">
-                    <span className="fw-bolder">apertura: </span>
+                    <span className="fw-bolder">
+                      <i className="bi bi-clock"></i>{" "}
+                    </span>
                     {formatoFecha(cuenta.createdAt)[0]}
                   </li>
                   {cuenta.closedAt && (

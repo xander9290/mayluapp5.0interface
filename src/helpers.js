@@ -87,7 +87,8 @@ export const verifyExiste = (array = [], value) => {
 
 export const verifyExisteMesa = (array = [], value) => {
   let existe = false;
-  array.map((item) => {
+  const cuentasAbiertas = array.filter((cuenta) => cuenta.estado === "abierto");
+  cuentasAbiertas.map((item) => {
     if (item.torreta.trim() === value.trim()) {
       existe = true;
     }

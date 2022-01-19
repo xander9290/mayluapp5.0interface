@@ -9,7 +9,7 @@ const initialRepartidor = {
 const initialEfectivo = {
   efectivo: 0,
 };
-function AsignarRepModal({ show, onHide, showNotaCliente }) {
+function AsignarRepModal({ show, onHide, showNotaCliente, closeDetalle }) {
   const { cuenta, updateCuenta, operadores, abrirCajon } =
     useContext(AppContext);
   const inputEfectivo = useRef();
@@ -99,6 +99,7 @@ function AsignarRepModal({ show, onHide, showNotaCliente }) {
   };
   const handleExited = () => {
     setRepartidor(initialRepartidor);
+    setEfectivo(initialEfectivo);
     setError(null);
   };
   return (

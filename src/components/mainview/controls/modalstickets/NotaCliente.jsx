@@ -14,7 +14,7 @@ const initialCliente = {
   lastEdit: "",
 };
 function NotaCliente({ cuenta, show, onHide }) {
-  const { clientes, settings } = useContext(AppContext);
+  const { clientes, settings, reiniciarCuenta } = useContext(AppContext);
 
   const setVista = () => {
     onHide();
@@ -152,11 +152,15 @@ function NotaCliente({ cuenta, show, onHide }) {
     if (findCliente) setCliente(findCliente);
   };
 
+  const handleShow = () => {
+    setVista();
+  };
+
   return (
     <Modal
       onHide={onHide}
       show={show}
-      onShow={setVista}
+      onShow={handleShow}
       backdrop="static"
       keyboard="true"
     >

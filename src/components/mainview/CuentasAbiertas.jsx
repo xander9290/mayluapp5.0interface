@@ -3,10 +3,9 @@ import { AppContext } from "../contexts/AppContext";
 import { formatoFecha, timeAgo } from "../../helpers";
 
 function CuentasAbiertas() {
-  const { cuentas, selectCuenta } = useContext(AppContext);
+  const { cuentas, selectCuenta, idx } = useContext(AppContext);
 
   const [listaCuentas, setListaCuentas] = useState([]);
-  const [idx, setIdx] = useState("");
 
   useEffect(() => {
     if (cuentas.length > 0) {
@@ -18,7 +17,7 @@ function CuentasAbiertas() {
   }, [cuentas]);
 
   const unselect = () => {
-    setIdx("");
+    // setIdx("");
     selectCuenta(null);
   };
 
@@ -29,7 +28,7 @@ function CuentasAbiertas() {
           key={cuenta._id}
           cuenta={cuenta}
           selectCuenta={selectCuenta}
-          setIdx={setIdx}
+          // setIdx={setIdx}
           idx={idx}
         />
       ))}
@@ -39,7 +38,7 @@ function CuentasAbiertas() {
 
 export default CuentasAbiertas;
 
-function CardCuenta({ cuenta, selectCuenta, setIdx, idx }) {
+function CardCuenta({ cuenta, selectCuenta, idx }) {
   const [timestate, setTimestate] = useState("00:00");
   const [cancelaciones, setCancelaciones] = useState(false);
 
@@ -62,7 +61,6 @@ function CardCuenta({ cuenta, selectCuenta, setIdx, idx }) {
 
   const select = (e, id) => {
     e.stopPropagation();
-    setIdx(id);
     selectCuenta(id);
   };
 
@@ -106,7 +104,9 @@ function CardCuenta({ cuenta, selectCuenta, setIdx, idx }) {
             <li className="list-group-item text-nowrap border-0 bg-white text-dark px-0">
               {cuenta.servicio === "domicilio" || cuenta.servicio === "pll" ? (
                 <React.Fragment>
-                  <span className="fw-bold">cnte: </span>
+                  <span className="fw-bold">
+                    <i className="bi bi-person-circle"></i>{" "}
+                  </span>
                   {cuenta.torreta}
                 </React.Fragment>
               ) : (
@@ -119,18 +119,24 @@ function CardCuenta({ cuenta, selectCuenta, setIdx, idx }) {
               )}
             </li>
             <li className="list-group-item border-0 bg-white text-dark">
-              <span className="fw-bold">apertura: </span>
+              <span className="fw-bold">
+                <i className="bi bi-clock"></i>{" "}
+              </span>
               {formatoFecha(cuenta.createdAt)[1]}
             </li>
             <li className="list-group-item border-0 bg-white text-dark">
-              <span className="fw-bold">Tiempo: </span>
+              <span className="fw-bold">
+                <i className="bi bi-hourglass-split"></i>{" "}
+              </span>
               {timestate}
             </li>
             <li className="list-group-item border-0 bg-white text-dark">
-              <span className="fw-bold">oper: </span>
-              {cuenta.createdBy}
-              <span className="fw-bold"> folio: </span>
-              {cuenta.folio}
+              <small>
+                <span className="fw-bold">oper: </span>
+                {cuenta.createdBy}
+                <span className="fw-bold"> folio: </span>
+                {cuenta.folio}
+              </small>
             </li>
           </ul>
         </div>

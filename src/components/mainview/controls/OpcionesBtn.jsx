@@ -4,7 +4,6 @@ import ComedorForm from "./serviciosform/ComedorForm";
 import ParallevarForm from "./serviciosform/ParallevarForm";
 import DomicilioForm from "./serviciosform/DomicilioForm";
 import InfoDomModal from "./InfoDomModal";
-import DividirModal from "./DividirModal";
 
 import { procesarItems } from "../../../helpers";
 
@@ -15,7 +14,6 @@ function OpcionesBtn({ targetAsignarRep }) {
   const [pllForm, setPllForm] = useState(false);
   const [domicilioForm, setDomicilioForm] = useState(false);
   const [infodom, setInfodom] = useState(false);
-  const [dividirModal, setDividirModal] = useState(false);
 
   const targetServicioForm = () => {
     if (!cuenta._id) {
@@ -47,38 +45,6 @@ function OpcionesBtn({ targetAsignarRep }) {
     });
   };
 
-  const setDescuento = () => {
-    if (cuenta.impreso) {
-      alert("la cuenta ya se encuntra impresa".toUpperCase());
-      return;
-    }
-    let porcentaje = window.prompt("Aplicar descuento en porcentaje %: ");
-    if (!porcentaje) return;
-    porcentaje = parseInt(porcentaje);
-    const { totalConDscto } = procesarItems(cuenta.items, porcentaje);
-    const newCta = {
-      ...cuenta,
-      cashInfo: {
-        ...cuenta.cashInfo,
-        dscto: porcentaje,
-        total: totalConDscto,
-      },
-    };
-    updateCuenta(cuenta._id, newCta, (res) => {
-      console.log("Descuento aplicado");
-    });
-  };
-
-  const targetDividirCuenta = () => {
-    if (cuenta.impreso) {
-      alert(
-        "La orden ya se encuentra impresa.\nReabre la orden para dividir".toUpperCase()
-      );
-      return;
-    }
-    setDividirModal(true);
-  };
-
   return (
     <div className="btn-group dropstart">
       <button
@@ -98,15 +64,6 @@ function OpcionesBtn({ targetAsignarRep }) {
             href="#"
           >
             ver domicilio
-          </a>
-        </li>
-        <li>
-          <a
-            onClick={targetDividirCuenta}
-            className="dropdown-item fs-4 py-3"
-            href="#"
-          >
-            dividir cuenta
           </a>
         </li>
         <li>
@@ -145,15 +102,6 @@ function OpcionesBtn({ targetAsignarRep }) {
             observaciones
           </a>
         </li>
-        <li>
-          <a
-            onClick={setDescuento}
-            className="dropdown-item fs-4 py-3"
-            href="#"
-          >
-            aplicar descuento
-          </a>
-        </li>
       </ul>
       <ComedorForm show={comedorForm} onHide={() => setComedorForm(false)} />
       <ParallevarForm show={pllForm} onHide={() => setPllForm(false)} />
@@ -167,7 +115,6 @@ function OpcionesBtn({ targetAsignarRep }) {
         cuenta={cuenta}
         clientes={clientes}
       />
-      <DividirModal show={dividirModal} onHide={() => setDividirModal(false)} />
     </div>
   );
 }

@@ -11,6 +11,7 @@ function DividirModal({ show, onHide }) {
     cargarCuentas,
     operador,
     initialCuenta,
+    session,
   } = useContext(AppContext);
 
   const [lista1, setLista1] = useState([]);
@@ -138,7 +139,7 @@ function DividirModal({ show, onHide }) {
         total: totalConDscto,
       },
       fecha: fechaActual(Date.now()),
-      createdBy: operador,
+      createdBy: session.operador,
       impreso: false,
       estado: "abierto",
     };
@@ -153,7 +154,6 @@ function DividirModal({ show, onHide }) {
             importe,
             total: totalConDscto,
           },
-          dividido: true,
         };
         updateCuenta(cuenta._id, newCta, (res) => {
           if (res) onHide();
@@ -165,7 +165,7 @@ function DividirModal({ show, onHide }) {
   const handleShow = () => {};
   const handleExited = async () => {
     await cargarCuentas();
-    setLista1([]);
+    //setLista1([]);
     setLista2([]);
     setItems1Idx(null);
     setItems2Idx(null);

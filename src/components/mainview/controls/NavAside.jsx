@@ -12,6 +12,7 @@ import ComandaModal from "./modalstickets/ComandaModal";
 import NotaCliente from "./modalstickets/NotaCliente";
 import AsignarRepModal from "./modalstickets/AsignarRepModal";
 import PagarModal from "./PagarModal";
+import DividirModal from "./DividirModal";
 
 function NavAside() {
   const { cuenta, updateCuenta, reiniciarCuenta } = useContext(AppContext);
@@ -22,6 +23,7 @@ function NavAside() {
   const [notaCliente, setNotaCliente] = useState(false);
   const [asignarRep, setAsignarRep] = useState(false);
   const [pagarCuenta, setPagarCuenta] = useState(false);
+  const [dividirModal, setDividirModal] = useState(false);
 
   useEffect(() => {
     if (cuenta._id) {
@@ -133,6 +135,16 @@ function NavAside() {
     setAsignarRep(true);
   };
 
+  const targetDividirCuenta = () => {
+    if (cuenta.impreso) {
+      alert(
+        "La orden ya se encuentra impresa.\nReabre la orden para dividir".toUpperCase()
+      );
+      return;
+    }
+    setDividirModal(true);
+  };
+
   return (
     <nav className="nav flex-column p-1">
       <AbrirBtn setCapturaForm={() => setCapturaForm(true)} />
@@ -149,6 +161,7 @@ function NavAside() {
         type="button"
         className="btn btn-warning text-uppercase btn-lg fw-bold text-dark py-3 fs-4 mt-1"
       >
+        <i className="bi bi-table me-2"></i>
         detalle
       </button>
       <ImprimirBtn
@@ -162,7 +175,7 @@ function NavAside() {
         disabled={cuenta.impreso ? false : true}
         className="btn btn-warning text-uppercase btn-lg fw-bold text-dark py-3 fs-4 mt-1"
       >
-        pagar
+        <i className="bi bi-cash-coin me-2"></i>pagar
       </button>
       <OpcionesBtn targetAsignarRep={targetAsignarRep} />
       <button
@@ -191,7 +204,9 @@ function NavAside() {
         onHide={() => setDetalleCuenta(false)}
         capturaForm={() => setCapturaForm(true)}
         showComandaModal={() => setComandaModal(true)}
+        showDividirModal={targetDividirCuenta}
         pagar={pagar}
+        reabrir={reabrir}
       />
       <ComandaModal
         show={comandaModal}
@@ -207,12 +222,15 @@ function NavAside() {
         show={asignarRep}
         onHide={() => setAsignarRep(false)}
         showNotaCliente={() => setNotaCliente(true)}
+        closeDetalle={() => setDetalleCuenta(false)}
       />
       <PagarModal
         show={pagarCuenta}
         onHide={() => setPagarCuenta(false)}
         showNotaCliente={() => setNotaCliente(true)}
+        closeDetalle={() => setDetalleCuenta(false)}
       />
+      <DividirModal show={dividirModal} onHide={() => setDividirModal(false)} />
     </nav>
   );
 }

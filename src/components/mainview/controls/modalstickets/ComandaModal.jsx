@@ -4,7 +4,7 @@ import { Modal } from "react-bootstrap";
 import { numeroALetras, formatoFecha } from "../../../../helpers";
 
 function ComandaModal({ show, onHide, cuenta }) {
-  const { updateCuenta, settings } = useContext(AppContext);
+  const { updateCuenta, settings, reiniciarCuenta } = useContext(AppContext);
 
   const setViewPrint = () => {
     onHide();
@@ -133,7 +133,7 @@ function ComandaModal({ show, onHide, cuenta }) {
       impreso: true,
     };
     updateCuenta(cuenta._id, newCta, (res) => {
-      if (res) console.log("impreso: " + res);
+      if (res) reiniciarCuenta();
     });
   };
   const renderArea1 = () => {

@@ -35,7 +35,7 @@ function AbrirBtn({ setCapturaForm }) {
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        abrir
+        abrir <i className="bi bi-file-earmark-plus"></i>
       </button>
       <ul className="dropdown-menu text-uppercase">
         <li>
@@ -53,6 +53,7 @@ function AbrirBtn({ setCapturaForm }) {
             className="dropdown-item fs-3 py-3"
             href="#"
           >
+            <i className="bi bi-bag me-2"></i>
             para llevar
           </a>
         </li>
@@ -62,6 +63,7 @@ function AbrirBtn({ setCapturaForm }) {
             className="dropdown-item fs-3 py-3"
             href="#"
           >
+            <i className="bi bi-house-door me-2"></i>
             domicilio
           </a>
         </li>

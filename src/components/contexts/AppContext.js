@@ -45,6 +45,8 @@ function AppProvider({ children }) {
     reiniciarCuenta,
     initialCuenta,
     cargarCuentas,
+    idx,
+    setIdx,
   } = useCuenta();
   const { otrosMedios, createMedio, deleteMedio } = useOtrosMedios();
   const { settings, changeNotaNegocioSettings, changeNotaClienteSettings } =
@@ -90,6 +92,8 @@ function AppProvider({ children }) {
     reiniciarCuenta,
     initialCuenta,
     cargarCuentas,
+    idx,
+    setIdx,
     // otros medios
     otrosMedios,
     createMedio,
