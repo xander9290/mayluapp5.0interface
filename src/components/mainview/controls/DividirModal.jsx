@@ -9,7 +9,6 @@ function DividirModal({ show, onHide }) {
     updateCuenta,
     createCuenta,
     cargarCuentas,
-    operador,
     initialCuenta,
     session,
   } = useContext(AppContext);

@@ -171,6 +171,7 @@ function PagarModal({ show, onHide, showNotaCliente, closeDetalle }) {
     setTarjeta(initialTarjeta);
     setMedios(initialMedios);
     setError(null);
+    setImprimir(true);
   };
   return (
     <Modal
