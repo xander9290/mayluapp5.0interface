@@ -1,6 +1,6 @@
 import { useState, useContext, useRef } from "react";
 import { AppContext } from "../../../contexts/AppContext";
-import { Modal } from "react-bootstrap";
+import { MyModal } from "../../../wrappers";
 
 const initialRepartidor = {
   repartidor: "",
@@ -103,113 +103,101 @@ function AsignarRepModal({ show, onHide, showNotaCliente, closeDetalle }) {
     setError(null);
   };
   return (
-    <Modal
-      onHide={onHide}
+    <MyModal
       show={show}
-      backdrop="static"
-      keyboard={false}
+      onHide={onHide}
       onShow={handleShow}
       onExited={handleExited}
       dialogClassName="modal-asignar-rep"
+      title="Asignar Repartidor"
     >
-      <div className="container-fluid bg-dark">
-        <div className="row">
-          <div className="col-md-12 p-1 d-flex justify-content-between bg-secondary">
-            <h3>Asignar Repartidor</h3>
-            <button className="btn btn-danger" type="button" onClick={onHide}>
-              Cerrar
-              <i className="bi bi-x-circle ms-2"></i>
-            </button>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12 p-1">
-            <form className="card" onSubmit={handleSubmit}>
-              <div className="card-header p-1 text-end">
-                <button type="submit" className="btn btn-warning btn-lg">
-                  Imprimir
-                </button>
+      <div className="row">
+        <div className="col-md-12 p-1">
+          <form className="card" onSubmit={handleSubmit}>
+            <div className="card-header p-1 text-end">
+              <button type="submit" className="btn btn-warning btn-lg">
+                Imprimir
+              </button>
+            </div>
+            <div className="card-body p-1">
+              <div className="mb-3">
+                <label className="form-label h3">
+                  Total A Pagar: ${cuenta.cashInfo.total}
+                </label>
               </div>
-              <div className="card-body p-1">
-                <div className="mb-3">
-                  <label className="form-label h3">
-                    Total A Pagar: ${cuenta.cashInfo.total}
-                  </label>
-                </div>
-                <div className="d-flex align-items-end">
-                  <label className="form-label h3">Efectivo: </label>
-                  <div className="input-group input-group-lg">
-                    <span className="input-group-text">$</span>
-                    <input
-                      type="text"
-                      name="efectivo"
-                      ref={inputEfectivo}
-                      className="form-control form-control-lg fw-bolder fs-3 text-end"
-                      value={efectivo.efectivo}
-                      onChange={handleEfectivo}
-                      required
-                      autoComplete="off"
-                      readOnly={repartidor.hasRepartidor}
-                    />
-                    <span className="input-group-text">.00</span>
-                  </div>
-                </div>
-                <div className="mb-3 text-end">
-                  <div className="form-text text-danger fs-6 fw-bold me-4">
-                    {error}
-                  </div>
-                </div>
-                <div className="mb-2 h2 text-uppercase">
-                  cambio: $
-                  {(() => {
-                    const cambio =
-                      parseInt(efectivo.efectivo) - cuenta.cashInfo.total;
-                    return cambio < 0 || isNaN(cambio) ? "0" : cambio;
-                  })()}
-                </div>
-                <div className="mb-1">
-                  <select
-                    className="form-select form-select-lg fs-5 text-uppercase"
-                    value={repartidor.repartidor}
-                    onChange={handleRepartidor}
+              <div className="d-flex align-items-end">
+                <label className="form-label h3">Efectivo: </label>
+                <div className="input-group input-group-lg">
+                  <span className="input-group-text">$</span>
+                  <input
+                    type="text"
+                    name="efectivo"
+                    ref={inputEfectivo}
+                    className="form-control form-control-lg fw-bolder fs-3 text-end"
+                    value={efectivo.efectivo}
+                    onChange={handleEfectivo}
                     required
-                    name="repartidor"
-                  >
-                    <option value="">Repartidor</option>
-                    {repartidores.map((rep) => (
-                      <option
-                        className="fw-bold fs-4"
-                        key={rep._id}
-                        value={rep.name}
-                      >
-                        {rep.name}
-                      </option>
-                    ))}
-                  </select>
+                    autoComplete="off"
+                    readOnly={repartidor.hasRepartidor}
+                  />
+                  <span className="input-group-text">.00</span>
                 </div>
               </div>
-              <div className="card-footer p-1">
-                <div
-                  style={{ height: "100px", overflowY: "auto" }}
-                  className="mb-2"
+              <div className="mb-3 text-end">
+                <div className="form-text text-danger fs-6 fw-bold me-4">
+                  {error}
+                </div>
+              </div>
+              <div className="mb-2 h2 text-uppercase">
+                cambio: $
+                {(() => {
+                  const cambio =
+                    parseInt(efectivo.efectivo) - cuenta.cashInfo.total;
+                  return cambio < 0 || isNaN(cambio) ? "0" : cambio;
+                })()}
+              </div>
+              <div className="mb-1">
+                <select
+                  className="form-select form-select-lg fs-5 text-uppercase"
+                  value={repartidor.repartidor}
+                  onChange={handleRepartidor}
+                  required
+                  name="repartidor"
                 >
+                  <option value="">Repartidor</option>
                   {repartidores.map((rep) => (
-                    <button
+                    <option
+                      className="fw-bold fs-4"
                       key={rep._id}
-                      type="button"
-                      onClick={() => selectRepartidor(rep.name)}
-                      className="btn btn-warning btn-lg text-uppercase me-2 mb-2 fs-4 border border-white"
+                      value={rep.name}
                     >
                       {rep.name}
-                    </button>
+                    </option>
                   ))}
-                </div>
+                </select>
               </div>
-            </form>
-          </div>
+            </div>
+            <div className="card-footer p-1">
+              <div
+                style={{ height: "100px", overflowY: "auto" }}
+                className="mb-2"
+              >
+                {repartidores.map((rep) => (
+                  <button
+                    key={rep._id}
+                    type="button"
+                    onClick={() => selectRepartidor(rep.name)}
+                    className="btn btn-warning btn-lg text-uppercase me-2 mb-2 fs-4 border border-white"
+                  >
+                    {rep.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </form>
         </div>
       </div>
-    </Modal>
+    </MyModal>
   );
 }
 
