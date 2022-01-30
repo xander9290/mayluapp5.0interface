@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useRef } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import { fechaActual } from "../../../helpers";
 
@@ -8,22 +8,39 @@ const initialCaja = {
   importe: 0,
   createdBy: "",
 };
+const initialImporte = {
+  importe: 0,
+};
 function CajaForm({ setXcaja }) {
+  const importeRef = useRef();
   const { createCaja, session, abrirCajon } = useContext(AppContext);
   const [caja, setCaja] = useState(initialCaja);
+  const [importe, setImporte] = useState(initialImporte);
 
   const handleCaja = (e) =>
     setCaja({ ...caja, [e.target.name]: e.target.value });
 
+  const handleImporte = (e) => {
+    let value = e.target.value;
+    if (isNaN(value) || value === "") value = 0;
+    setImporte({ ...importe, [e.target.name]: parseInt(value) });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (importe.importe === 0) {
+      importeRef.current.select();
+      return;
+    }
     const newCaja = {
       ...caja,
+      ...importe,
       createdBy: session.operador,
       fecha: fechaActual(Date.now()),
     };
     createCaja(newCaja, async (res) => {
       setCaja(initialCaja);
+      setImporte(initialImporte);
       setXcaja(res);
       await abrirCajon();
     });
@@ -31,6 +48,7 @@ function CajaForm({ setXcaja }) {
 
   const cancelar = () => {
     setCaja(initialCaja);
+    setImporte(initialImporte);
   };
 
   return (
@@ -72,11 +90,12 @@ function CajaForm({ setXcaja }) {
           <div className="input-group input-group-lg">
             <span className="input-group-text">$</span>
             <input
-              type="number"
+              type="text"
               name="importe"
-              value={caja.importe}
-              onChange={handleCaja}
-              placeholder="Concepto"
+              ref={importeRef}
+              value={importe.importe}
+              onChange={handleImporte}
+              placeholder="Importe"
               required
               className="form-control form-control-lg"
             />
