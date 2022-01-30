@@ -1,7 +1,7 @@
 import { useState, useContext, useRef, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { AppContext } from "../../contexts/AppContext";
-import { fechaISO, procesarItems } from "../../../helpers";
+import { fechaISO, procesarItems, agruparItems } from "../../../helpers";
 
 function CapturaForm({ show, onHide, showDetalle }) {
   const {
@@ -147,7 +147,7 @@ function CapturaForm({ show, onHide, showDetalle }) {
     const { importe, totalConDscto } = procesarItems(oldItems, cuenta.dscto);
     const newCta = {
       ...cuenta,
-      items: oldItems,
+      items: agruparItems(oldItems),
       cashInfo: {
         ...cuenta.cashInfo,
         importe,

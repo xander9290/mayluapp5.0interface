@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { AppContext } from "../../contexts/AppContext";
-import { fechaActual } from "../../../helpers";
+import { fechaActual, agruparItems } from "../../../helpers";
 import routes from "../../routes";
 import { Modal } from "react-bootstrap";
 
@@ -257,7 +257,7 @@ function MonitorVentaModal({ show, onHide }) {
   const procesarProductos = (ctas) => {
     const _items = [];
     let itemsCancelados = [];
-    const list = [];
+    let list = [];
 
     // se vacian los productos vendidos
     ctas.map((cuenta) => {
@@ -274,26 +274,43 @@ function MonitorVentaModal({ show, onHide }) {
     const itemsVisibles = itemsContables.filter(
       (item) => item.cancelado === false
     );
-    ps.map((producto) => {
-      const contables = itemsVisibles.filter(
-        (item) => item.producto_id === producto._id
-      );
-      if (contables.length > 0) {
-        let cant = 0;
-        let importe = 0;
-        contables.map((contable) => {
-          cant += contable.cant;
-          importe += contable.importe;
-        });
-        const newItem = {
-          cant,
-          importe,
-          name: contables[0].name,
-        };
-        list.push(newItem);
-      }
-    });
+    // ps.map((producto) => {
+    //   const contables = itemsVisibles.filter(
+    //     (item) => item.producto_id === producto._id
+    //   );
+    //   if (contables.length > 0) {
+    //     let cant = 0;
+    //     let importe = 0;
+    //     contables.map((contable) => {
+    //       cant += contable.cant;
+    //       importe += contable.importe;
+    //     });
+    //     const newItem = {
+    //       cant,
+    //       importe,
+    //       name: contables[0].name,
+    //     };
+    //     list.push(newItem);
+    //   }
+    // });
     // se ordenan los productos por mas vendido
+    const helper = {};
+    const result = itemsVisibles.reduce(function (r, o) {
+      let key = o._id + "-" + o.name;
+
+      if (!helper[key]) {
+        helper[key] = Object.assign({}, o); // create a copy of o
+        r.push(helper[key]);
+      } else {
+        helper[key].cant += o.cant;
+        helper[key].importe += o.importe;
+      }
+
+      return r;
+    }, []);
+
+    list = result;
+
     const listSort = list.sort((a, b) => {
       if (a.cant > b.cant) return -1;
     });

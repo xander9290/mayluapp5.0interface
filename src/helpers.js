@@ -110,6 +110,31 @@ export const procesarItems = (items = [], dscto = 0) => {
   return { importe, totalConDscto };
 };
 
+export const agruparItems = (array = []) => {
+  let list = [];
+  const helper = {};
+  const itemsAgrupables = array.filter(
+    (item) => item.modificadores.length === 0
+  );
+  const itemsNoAgrupables = array.filter(
+    (item) => item.modificadores.length > 0
+  );
+  const result = itemsAgrupables.reduce((r, o) => {
+    let key = o._id + "-" + o.name;
+    if (!helper[key]) {
+      helper[key] = Object.assign({}, o); // create a copy of o
+      r.push(helper[key]);
+    } else {
+      helper[key].cant += o.cant;
+      helper[key].importe += o.importe;
+    }
+
+    return r;
+  }, []);
+  list = [...itemsNoAgrupables, ...result];
+  return list;
+};
+
 export const numeroALetras = (function () {
   // Código basado en el comentario de @sapienman
   // Código basado en https://gist.github.com/alfchee/e563340276f89b22042a
