@@ -77,11 +77,11 @@ function CapturaForm({ show, onHide, showDetalle }) {
   const scrollRef = useRef();
   useEffect(() => {
     if (items.length > 0) {
-      // calcularTotal();
+      calcularTotal();
       scrollTop();
       setItemsIdx(!items ? 0 : items.length - 1);
     } else {
-      // setTotal(0);
+      setTotal(0);
     }
   }, [items]);
 
@@ -93,13 +93,13 @@ function CapturaForm({ show, onHide, showDetalle }) {
     }
   };
 
-  // const calcularTotal = () => {
-  //   let total = 0;
-  //   items.map((item) => {
-  //     total += item.importe;
-  //   });
-  //   setTotal(total);
-  // };
+  const calcularTotal = () => {
+    let total = 0;
+    items.map((item) => {
+      total += item.importe;
+    });
+    setTotal(total);
+  };
 
   // MISCELANEO
   const handleValuesMiscelaneo = (e) => {
@@ -454,12 +454,12 @@ function CapturaForm({ show, onHide, showDetalle }) {
               </div>
               <div className="card-footer p-1  d-flex justify-content-end align-items-center">
                 <h3 className="text-uppercase text-end me-4">
-                  {/* Total: ${total > 0 ? total : "0"} */}
-                  Total: $
+                  Total: ${total > 0 ? total : "0"}
+                  {/* Total: $
                   {items.reduce(
                     (acc, { cant, price }) => acc + cant * price,
                     0
-                  )}
+                  )} */}
                 </h3>
               </div>
             </div>
