@@ -112,6 +112,10 @@ export const procesarItems = (items = [], dscto = 0) => {
 
 export const agruparItems = (array = []) => {
   let list = [];
+  if (array.length === 0) {
+    list = [];
+    return;
+  }
   const helper = {};
   const itemsAgrupables = array.filter(
     (item) => item.modificadores.length === 0

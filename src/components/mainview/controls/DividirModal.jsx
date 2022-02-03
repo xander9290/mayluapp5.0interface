@@ -58,6 +58,10 @@ function DividirModal({ show, onHide }) {
   };
 
   const enviarItem = () => {
+    if (items1Idx === null) {
+      alert("Selecciona un item para continuar.");
+      return;
+    }
     const list = lista1;
     const item = list[items1Idx];
     if (item.cant > 1) {
@@ -105,6 +109,10 @@ function DividirModal({ show, onHide }) {
   };
 
   const regresraItem = () => {
+    if (items2Idx === null) {
+      alert("Selecciona un item para continuar.");
+      return;
+    }
     const list = lista2;
     const newItem = {
       ...list[items2Idx],
