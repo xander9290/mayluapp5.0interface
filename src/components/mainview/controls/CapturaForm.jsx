@@ -214,7 +214,7 @@ function CapturaForm({ show, onHide, showDetalle }) {
     const list = items;
     try {
       list[itemsIdx].modificadores.push(mod);
-      if (mod.price > 0) {
+      if (parseInt(mod.price) > 0) {
         list[itemsIdx].importe = list[itemsIdx].importe + parseInt(mod.price);
       }
     } catch (error) {
