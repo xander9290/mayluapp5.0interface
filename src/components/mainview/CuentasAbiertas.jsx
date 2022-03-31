@@ -1,6 +1,10 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { AppContext } from "../contexts/AppContext";
 import { formatoFecha, timeAgo } from "../../helpers";
+import TimeAgo from "javascript-time-ago";
+import ReactTimeAgo from "react-time-ago";
+import es from "javascript-time-ago/locale/es.json";
+TimeAgo.addLocale(es);
 
 function CuentasAbiertas() {
   const { cuentas, selectCuenta, idx } = useContext(AppContext);
@@ -39,21 +43,21 @@ function CuentasAbiertas() {
 export default CuentasAbiertas;
 
 function CardCuenta({ cuenta, selectCuenta, idx }) {
-  const [timestate, setTimestate] = useState("00:00");
+  // const [timestate, setTimestate] = useState("00:00");
   const [cancelaciones, setCancelaciones] = useState(false);
 
   const isMounted = useRef(true);
-  useEffect(() => {
-    setInterval(() => {
-      if (isMounted.current) {
-        checkTime();
-      }
-    }, 1000);
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     if (isMounted.current) {
+  //       checkTime();
+  //     }
+  //   }, 1000);
 
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
+  //   return () => {
+  //     isMounted.current = false;
+  //   };
+  // }, []);
 
   useEffect(() => {
     checkCancelaciones();
@@ -74,10 +78,10 @@ function CardCuenta({ cuenta, selectCuenta, idx }) {
     setCancelaciones(cls);
   };
 
-  const checkTime = () => {
-    const diff = timeAgo(new Date(cuenta.createdAt));
-    setTimestate(diff);
-  };
+  // const checkTime = () => {
+  //   const diff = timeAgo(new Date(cuenta.createdAt));
+  //   setTimestate(diff);
+  // };
   return (
     <div className="col-md-3 mb-2 p-1 text-uppercase">
       <div className="card bg-white">
@@ -128,7 +132,8 @@ function CardCuenta({ cuenta, selectCuenta, idx }) {
               <span className="fw-bold">
                 <i className="bi bi-hourglass-split"></i>{" "}
               </span>
-              {timestate}
+              {/* {timestate} */}
+              <ReactTimeAgo date={new Date(cuenta.createdAt)} locale="es-MX" />
             </li>
             <li className="list-group-item border-0 bg-white text-dark">
               <small>

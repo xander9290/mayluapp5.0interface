@@ -116,29 +116,13 @@ function ComandaModal({ show, onHide, cuenta }) {
       items.push(item);
     });
 
-    const a1 = items
-      .filter((item) => item.area_nota === "area1")
-      .sort((a, b) => {
-        if (a.name < b.name) return -1;
-      });
+    const a1 = items.filter((item) => item.area_nota === "area1");
 
-    const a2 = items
-      .filter((item) => item.area_nota === "area2")
-      .sort((a, b) => {
-        if (a.name < b.name) return -1;
-      });
+    const a2 = items.filter((item) => item.area_nota === "area2");
 
-    const a3 = items
-      .filter((item) => item.area_nota === "area3")
-      .sort((a, b) => {
-        if (a.name < b.name) return -1;
-      });
+    const a3 = items.filter((item) => item.area_nota === "area3");
 
-    const a4 = items
-      .filter((item) => item.area_nota === "area4")
-      .sort((a, b) => {
-        if (a.name < b.name) return -1;
-      });
+    const a4 = items.filter((item) => item.area_nota === "area4");
 
     setArea1([...a1]);
     setArea2([...a2]);
