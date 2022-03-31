@@ -148,11 +148,11 @@ function PagarModal({ show, onHide, showNotaCliente, closeDetalle }) {
       "Establece el porcentaje de la comisión %".toUpperCase()
     );
     if (!porcentaje) return;
-    if (parseInt(porcentaje) === 0) {
+    if (parseFloat(porcentaje) === 0) {
       setTarjeta(initialTarjeta);
       return;
     }
-    porcentaje = parseInt(porcentaje);
+    porcentaje = parseFloat(porcentaje);
 
     const comision = Math.round((Math.abs(saldo) * porcentaje) / 100);
     setTarjeta({
