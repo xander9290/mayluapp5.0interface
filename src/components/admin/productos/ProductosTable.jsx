@@ -109,6 +109,7 @@ function ProductosTable({ setProducto }) {
               <th scope="col">ubicación</th>
               <th scope="col">área</th>
               <th scope="col">contable</th>
+              <th scope="col">compuestos</th>
               <th scope="col">código</th>
             </tr>
           </thead>
@@ -180,6 +181,7 @@ function ProductosTable({ setProducto }) {
                       readOnly
                     />
                   </td>
+                  <td className="text-center">{producto.compuestos.length}</td>
                   <td className="text-center">{producto.codigo}</td>
                 </tr>
               );

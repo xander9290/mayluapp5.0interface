@@ -3,6 +3,7 @@ import { createContext } from "react";
 import useCategorias from "../hooks/useCategorias";
 import useSubcategorias from "../hooks/useSubcategorias";
 import useProductos from "../hooks/useProductos";
+import useCompuestos from "../hooks/useCompuesto";
 import useClientes from "../hooks/useClientes";
 import useOperador from "../hooks/useOperador";
 import useCuenta from "../hooks/useCuenta";
@@ -23,6 +24,8 @@ function AppProvider({ children }) {
   } = useSubcategorias();
   const { productos, createProducto, updateProducto, deleteProducto } =
     useProductos();
+  const { compuestos, createCompuesto, updateCompuesto, deleteCompuesto } =
+    useCompuestos();
   const { clientes, createCliente, updateCliente, deleteCliente } =
     useClientes();
   const {
@@ -68,6 +71,11 @@ function AppProvider({ children }) {
     createProducto,
     updateProducto,
     deleteProducto,
+    // Compuestos
+    compuestos,
+    createCompuesto,
+    updateCompuesto,
+    deleteCompuesto,
     // Clientes
     clientes,
     createCliente,
