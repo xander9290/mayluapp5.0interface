@@ -31,7 +31,6 @@ function AsignarCompuesto({
       setErr("selecciona un producto");
       return;
     }
-    if (!window.confirm("Confirmar")) return;
     const newProducto = {
       ...producto,
       compuestos: listaCompuestos,
@@ -73,7 +72,9 @@ function AsignarCompuesto({
               style={{ userSelect: "none" }}
               className="list-group-item d-flex justify-content-between align-items-center bg-white text-dark"
             >
-              <span className="text-uppercase">{compuesto.name}</span>
+              <span className="text-uppercase">
+                {compuesto.name} ${compuesto.price}
+              </span>
               <button
                 onClick={() => desAsginarCompuesto(compuesto._id)}
                 type="button"
@@ -86,11 +87,7 @@ function AsignarCompuesto({
         </ul>
       </div>
       <div className="card-footer p-1">
-        <button
-          disabled={listaCompuestos.length > 0 ? false : true}
-          type="submit"
-          className="btn btn-primary btn-lg mx-1"
-        >
+        <button type="submit" className="btn btn-primary btn-lg mx-1">
           Asginar
         </button>
         <button

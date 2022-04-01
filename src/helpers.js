@@ -111,32 +111,33 @@ export const procesarItems = (items = [], dscto = 0) => {
 };
 
 export const agruparItems = (array = []) => {
-  let list = [];
-  if (array.length === 0) {
-    list = [];
-    return;
-  }
-  const helper = {};
-  const itemsAgrupables = array.filter(
-    (item) => item.modificadores.length === 0
-  );
-  const itemsNoAgrupables = array.filter(
-    (item) => item.modificadores.length > 0
-  );
-  const result = itemsAgrupables.reduce((r, o) => {
-    let key = o._id + "-" + o.name;
-    if (!helper[key]) {
-      helper[key] = Object.assign({}, o); // create a copy of o
-      r.push(helper[key]);
-    } else {
-      helper[key].cant += o.cant;
-      helper[key].importe += o.importe;
-    }
+  // let list = [];
+  // if (array.length === 0) {
+  //   list = [];
+  //   return;
+  // }
+  // const helper = {};
+  // const itemsAgrupables = array.filter(
+  //   (item) => item.modificadores.length === 0
+  // );
+  // const itemsNoAgrupables = array.filter(
+  //   (item) => item.modificadores.length > 0
+  // );
+  // const result = itemsAgrupables.reduce((r, o) => {
+  //   let key = o._id + "-" + o.name;
+  //   if (!helper[key]) {
+  //     helper[key] = Object.assign({}, o); // create a copy of o
+  //     r.push(helper[key]);
+  //   } else {
+  //     helper[key].cant += o.cant;
+  //     helper[key].importe += o.importe;
+  //   }
 
-    return r;
-  }, []);
-  list = [...itemsNoAgrupables, ...result];
-  return list;
+  //   return r;
+  // }, []);
+  // list = [...itemsNoAgrupables, ...result];
+  // console.log(list);
+  return array;
 };
 
 export const numeroALetras = (function () {

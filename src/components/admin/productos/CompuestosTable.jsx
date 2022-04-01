@@ -84,7 +84,10 @@ function CompuestosTable({
           Actualizar
         </button>
       </div>
-      <div className="card-body p-1 cards-body-admin-productos">
+      <div
+        style={{ height: "500px", overflow: "auto" }}
+        className="card-body p-1"
+      >
         <table className="table table-bordered text-dark">
           <thead>
             <tr className="text-center text-uppercase">
@@ -94,10 +97,14 @@ function CompuestosTable({
               <th scope="col">
                 <i className="bi bi-pencil"></i>
               </th>
+              <th scope="col">
+                <i className="bi bi-arrow-right-square"></i>
+              </th>
               <th scope="col">Descripción</th>
               <th scope="col">medida</th>
               <th scope="col">unidad</th>
-              <th scope="col">asignar</th>
+              <th scope="col">precio</th>
+              <th scope="col">rdto</th>
             </tr>
           </thead>
           <tbody>
@@ -131,19 +138,21 @@ function CompuestosTable({
                     <i className="bi bi-pencil"></i>
                   </button>
                 </th>
-                <td className="fs-5">{compuesto.name}</td>
-                <td className="fs-5 text-center">{compuesto.medida}</td>
-                <td className="fs-5 text-center">{compuesto.unidad}</td>
                 <td className="fs-5 text-center">
                   <button
                     onClick={() => asignarCompuesto(compuesto._id)}
-                    title="ENVIAR"
+                    title="ASIGNAR"
                     type="button"
-                    className="btn btn-warning"
+                    className="btn btn-warning btn-sm"
                   >
                     <i className="bi bi-arrow-right-square"></i>
                   </button>
                 </td>
+                <td className="fs-5">{compuesto.name}</td>
+                <td className="fs-5 text-center">{compuesto.medida}</td>
+                <td className="fs-5 text-center">{compuesto.unidad}</td>
+                <td className="fs-5 text-end">${compuesto.price}</td>
+                <td className="fs-5 text-center">{compuesto.rendimiento}</td>
               </tr>
             ))}
           </tbody>

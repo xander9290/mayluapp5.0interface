@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import ProductosTable from "./ProductosTable";
 import ProductosForm from "./ProductosForm";
 import Compuestos from "./Compuestos";
+import Estadisticas from "./Estadisticas";
 
 const initialProducto = {
   name: "",
@@ -109,7 +110,7 @@ function ProductosModal({ show, onHide }) {
             role="tabpanel"
             aria-labelledby="componer-tab"
           >
-            <h5>Estadísticas</h5>
+            <Estadisticas />
           </div>
         </div>
       </div>

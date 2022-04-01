@@ -189,6 +189,13 @@ function CapturaForm({ show, onHide, showDetalle }) {
       const importe = cant * parseInt(pdcto.price);
       const price = pdcto.price;
 
+      // proceso de compuestos
+      const updatedCompuestos = pdcto.compuestos.map((compuesto) => {
+        compuesto.medida = compuesto.medida * cant;
+        compuesto.price = compuesto.price * cant;
+        return compuesto;
+      });
+
       const newItem = {
         cant,
         name: pdcto.name,
@@ -196,6 +203,7 @@ function CapturaForm({ show, onHide, showDetalle }) {
         price,
         dscto: 0,
         modificadores: [],
+        compuestos: updatedCompuestos,
         producto_id: pdcto._id,
         contable: pdcto.contable,
         area_nota: pdcto.areaNota,

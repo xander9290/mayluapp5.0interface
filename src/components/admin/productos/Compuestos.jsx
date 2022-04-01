@@ -8,6 +8,10 @@ const initialCompuesto = {
   name: "",
   medida: 0,
   unidad: "",
+  price: 0, // precio del compuesto
+  punitario: "", // precio del insumo NUMBER
+  insumo: "", // medida del insumo NUMBER
+  rendimiento: 0,
 };
 function Compuestos({}) {
   const nameInput = useRef();
@@ -29,7 +33,15 @@ function Compuestos({}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (compuesto._id) {
-      updateCompuesto(compuesto._id, compuesto);
+      const newCompuesto = {
+        ...compuesto,
+        price: calcularPrecio().precio,
+        punitario: parseInt(compuesto.punitario),
+        insumo: parseInt(compuesto.insumo),
+        medida: parseInt(compuesto.medida),
+        rendimiento: calcularPrecio().rendimiento,
+      };
+      updateCompuesto(compuesto._id, newCompuesto);
       cancelar();
     } else {
       if (verifyExiste(compuestos, compuesto.name)) {
@@ -39,9 +51,28 @@ function Compuestos({}) {
         );
         return;
       }
-      createCompuesto(compuesto);
+
+      const newCompuesto = {
+        ...compuesto,
+        price: calcularPrecio().precio,
+        punitario: parseInt(compuesto.punitario),
+        insumo: parseInt(compuesto.insumo),
+        medida: parseInt(compuesto.medida),
+        rendimiento: calcularPrecio().rendimiento,
+      };
+      createCompuesto(newCompuesto);
       cancelar();
     }
+  };
+
+  const calcularPrecio = () => {
+    const insumo = parseInt(compuesto.insumo);
+    const punitario = parseInt(compuesto.punitario);
+    const medida = parseInt(compuesto.medida);
+    let precio = Math.round((punitario * medida) / insumo);
+    if (precio === 0) precio = 1;
+    const rendimiento = Math.round(insumo / medida);
+    return { precio, rendimiento };
   };
 
   const asignarCompuesto = (id) => {
@@ -78,7 +109,6 @@ function Compuestos({}) {
             </h5>
           </div>
           <div className="card-body">
-            <h6 className="text-dark">Compuesto Nuevo</h6>
             <div className="mb-1">
               <input
                 className="form-control form-control-lg"
@@ -92,10 +122,10 @@ function Compuestos({}) {
                 required
               />
             </div>
-            <div className="mb-1">
+            <div className="mb-1 d-flex">
               <input
                 className="form-control form-control-lg"
-                type="number"
+                type="text"
                 name="medida"
                 min="0"
                 value={compuesto.medida}
@@ -104,8 +134,6 @@ function Compuestos({}) {
                 autoComplete="off"
                 required
               />
-            </div>
-            <div className="mb-2">
               <select
                 className="form-select form-select-lg text-uppercase"
                 name="unidad"
@@ -114,12 +142,38 @@ function Compuestos({}) {
                 required
               >
                 <option value="">Unidad</option>
-                <option value="gr">Gramo</option>
-                <option value="ml">Mililitro</option>
-                <option value="kg">Kilo</option>
-                <option value="pza">Pieza</option>
+                <option value="gr">Gr</option>
+                <option value="ml">Ml</option>
+                <option value="kg">KG</option>
+                <option value="pza">Pza</option>
               </select>
             </div>
+            <fieldset>
+              <legend className="text-dark">Insumo</legend>
+              <div className="mb-1 d-flex">
+                <input
+                  className="form-control form-control-lg"
+                  type="text"
+                  name="insumo"
+                  value={compuesto.insumo}
+                  onChange={handleCompuesto}
+                  placeholder="Insumo GR"
+                  autoComplete="off"
+                  required
+                />
+                <input
+                  className="form-control form-control-lg"
+                  type="text"
+                  name="punitario"
+                  value={compuesto.punitario}
+                  onChange={handleCompuesto}
+                  placeholder="Precio $"
+                  autoComplete="off"
+                  required
+                />
+              </div>
+            </fieldset>
+            <div className="mb-2"></div>
             {compuesto._id ? (
               <button title="EDITAR" className="btn btn-primary" type="submit">
                 <i className="bi bi-pencil me-2"></i>
@@ -140,6 +194,12 @@ function Compuestos({}) {
               <i className="bi bi-x-circle me-2"></i>
               Cancelar
             </button>
+          </div>
+          <div className="card-footer p-1">
+            <h5>
+              Precio del producto: $
+              {listaCompuestos.reduce((pre, cur) => pre + cur.price, 0)}
+            </h5>
           </div>
         </form>
       </div>
