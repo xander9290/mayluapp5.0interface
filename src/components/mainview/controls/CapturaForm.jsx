@@ -11,6 +11,7 @@ function CapturaForm({ show, onHide, showDetalle }) {
     subcategorias,
     productos,
     session,
+    compuestos,
   } = useContext(AppContext);
 
   const [obs, setObs] = useState({ obs: "" });
@@ -189,13 +190,6 @@ function CapturaForm({ show, onHide, showDetalle }) {
       const importe = cant * parseInt(pdcto.price);
       const price = pdcto.price;
 
-      // proceso de compuestos
-      const updatedCompuestos = pdcto.compuestos.map((compuesto) => {
-        compuesto.medida = compuesto.medida * cant;
-        compuesto.price = compuesto.price * cant;
-        return compuesto;
-      });
-
       const newItem = {
         cant,
         name: pdcto.name,
@@ -203,7 +197,7 @@ function CapturaForm({ show, onHide, showDetalle }) {
         price,
         dscto: 0,
         modificadores: [],
-        compuestos: updatedCompuestos,
+        compuestos: procesarCompuestos(pdcto, cant),
         producto_id: pdcto._id,
         contable: pdcto.contable,
         area_nota: pdcto.areaNota,
@@ -216,6 +210,21 @@ function CapturaForm({ show, onHide, showDetalle }) {
       setItems([...items, newItem]);
       setContador(1);
     }
+  };
+
+  const procesarCompuestos = (pdcto, cant) => {
+    const updatedCompuestos = pdcto.compuestos.map((currentCompuesto) => {
+      compuestos.map((compuesto) => {
+        if (currentCompuesto._id === compuesto._id) {
+          currentCompuesto.medida = compuesto.medida * cant;
+          currentCompuesto.price = compuesto.price * cant;
+        }
+        return compuesto;
+      });
+      return currentCompuesto;
+    });
+
+    return updatedCompuestos;
   };
 
   const insertarModificador = (mod) => {

@@ -8,7 +8,11 @@ function CompuestosTable({
 }) {
   const [buscar, setBuscar] = useState({ buscar: "" });
   const [idx, setIdx] = useState("");
-  const [listaCompuestos, setListaCompuestos] = useState([]);
+  const [listaCompuestos, setListaCompuestos] = useState(
+    [].sort((a, b) => {
+      if (a.name > b.name) return -1;
+    })
+  );
 
   useEffect(() => {
     setListaCompuestos(compuestos);

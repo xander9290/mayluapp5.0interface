@@ -61,7 +61,6 @@ function Estadisticas({}) {
       return r;
     }, []);
     setListaCompuestos(result);
-    console.log(result);
   };
   return (
     <div className="row">
