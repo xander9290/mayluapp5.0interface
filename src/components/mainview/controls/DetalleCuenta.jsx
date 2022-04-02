@@ -12,12 +12,28 @@ function DetalleCuenta({
   showDividirModal,
   reabrir,
 }) {
-  const { updateCuenta, cuenta, reiniciarCuenta } = useContext(AppContext);
+  const { updateCuenta, cuenta, reiniciarCuenta, compuestos } =
+    useContext(AppContext);
 
   const [itemsIdx, setItemsIdx] = useState(null);
 
   const selectItem = (idx) => {
     setItemsIdx(idx);
+  };
+
+  const procesarCompuestos = (pdcto, cant) => {
+    const updatedCompuestos = pdcto.compuestos.map((currentCompuesto) => {
+      compuestos.map((compuesto) => {
+        if (currentCompuesto._id === compuesto._id) {
+          currentCompuesto.medida = compuesto.medida * cant;
+          currentCompuesto.price = compuesto.price * cant;
+        }
+        return compuesto;
+      });
+      return currentCompuesto;
+    });
+
+    return updatedCompuestos;
   };
 
   const cancelarItem = (idx) => {
@@ -52,6 +68,7 @@ function DetalleCuenta({
       }
       list[idx].motivo = motivo;
       list[idx].hora = fechaISO();
+      list[idx].compuestos = procesarCompuestos(list[idx], nvaCant);
       if (nvaCant === 0) {
         list[idx].cancelado = true;
         list[idx].cant = parseInt(cant);

@@ -39,6 +39,7 @@ function Estadisticas({}) {
       });
     });
     const itemsContables = getItems.filter((item) => item.cancelado === false);
+    console.log(itemsContables);
     const getCompuestos = [];
     itemsContables.map((item) => {
       item.compuestos.map((com) => {

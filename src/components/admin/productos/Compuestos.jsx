@@ -69,9 +69,9 @@ function Compuestos({}) {
     const insumo = parseInt(compuesto.insumo);
     const punitario = parseInt(compuesto.punitario);
     const medida = parseInt(compuesto.medida);
-    let precio = Math.round((punitario * medida) / insumo);
+    let precio = Math.ceil((punitario * medida) / insumo);
     if (precio === 0) precio = 1;
-    const rendimiento = Math.round(insumo / medida);
+    const rendimiento = Math.ceil(insumo / medida);
     return { precio, rendimiento };
   };
 
