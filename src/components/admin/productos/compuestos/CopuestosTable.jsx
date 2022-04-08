@@ -1,26 +1,15 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function CompuestosTable({
-  setCompuesto,
   compuestos,
   deleteCompuesto,
+  selectCompuesto,
   asignarCompuesto,
+  categorias,
 }) {
-  const [buscar, setBuscar] = useState({ buscar: "" });
+  const [compuestosList, setCompuestosList] = useState([]);
   const [idx, setIdx] = useState("");
-  const [listaCompuestos, setListaCompuestos] = useState(
-    [].sort((a, b) => {
-      if (a.name > b.name) return -1;
-    })
-  );
-
-  useEffect(() => {
-    setListaCompuestos(compuestos);
-  }, [compuestos]);
-
-  const handleBuscar = (e) => {
-    setBuscar({ ...buscar, [e.target.name]: e.target.value });
-  };
+  const [buscar, setBuscar] = useState("");
 
   const handleSubmitBuscar = (e) => {
     e.preventDefault();
@@ -30,7 +19,7 @@ function CompuestosTable({
 
   const busqueda = () => {
     const result = compuestos.filter((compuesto) =>
-      compuesto.name.toLowerCase().includes(buscar.buscar.toLocaleLowerCase())
+      compuesto.name.toLowerCase().includes(buscar.toLocaleLowerCase())
     );
     if (result.length === 1) {
       const id = result[0]._id;
@@ -38,51 +27,72 @@ function CompuestosTable({
       document.getElementById(id).scrollIntoView();
     } else if (result.length > 1) {
       setIdx("");
-      setListaCompuestos(result);
+      setCompuestosList(result);
     } else {
       alert("producto no encontrado".toUpperCase());
     }
   };
 
-  const selectCompuesto = (id) => {
-    const findCompuesto = listaCompuestos.find(
-      (compuesto) => compuesto._id === id
+  const buscarPorCategoria = (e) => {
+    const findCompuestos = compuestos.filter(
+      (compuesto) => compuesto.categoriaId === e.target.value
     );
-    if (findCompuesto) setCompuesto(findCompuesto);
+
+    if (findCompuestos.length > 0) {
+      setCompuestosList(findCompuestos);
+    } else {
+      setCompuestosList(compuestos);
+    }
   };
 
   const actualizar = () => {
-    setListaCompuestos(compuestos);
+    setCompuestosList(compuestos);
     setIdx("");
-    setBuscar({ buscar: "" });
+    setBuscar("");
   };
+
+  useEffect(() => {
+    setCompuestosList(compuestos);
+  }, [compuestos]);
 
   return (
     <div className="card bg-white">
-      <div className="card-header p-1 d-flex justify-content-between">
+      <div className="card-header p-1 d-flex justify-content-between align-items-center">
         <form className="d-flex" onSubmit={handleSubmitBuscar}>
           <input
-            className="form-control form-control-lg"
+            className="form-control"
             type="text"
             name="buscar"
-            value={buscar.buscar}
-            onChange={handleBuscar}
+            value={buscar}
+            onChange={(e) => setBuscar(e.target.value)}
             required
             autoComplete="off"
             placeholder="Buscar..."
           />
-          <button
-            title="BUSCAR"
-            className="btn btn-primary btn-lg"
-            type="submit"
-          >
+          <button title="BUSCAR" className="btn btn-primary" type="submit">
             <i className="bi bi-search"></i>
           </button>
+          <select
+            className="form-select mb-1 ms-2 text-uppercase"
+            name="categoriaId"
+            onChange={buscarPorCategoria}
+          >
+            <option value="">Categoría</option>
+            {categorias.map((categoria) => (
+              <option
+                className="fs-4"
+                key={categoria._id}
+                value={categoria._id}
+              >
+                {categoria.name}
+              </option>
+            ))}
+          </select>
         </form>
         <button
           onClick={actualizar}
           type="button"
-          className="btn btn-success btn-lg text-dark"
+          className="btn btn-success text-dark"
         >
           <i className="bi bi-arrow-repeat me-2"></i>
           Actualizar
@@ -106,17 +116,16 @@ function CompuestosTable({
               </th>
               <th scope="col">Descripción</th>
               <th scope="col">medida</th>
-              <th scope="col">unidad</th>
               <th scope="col">precio</th>
               <th scope="col">rdto</th>
             </tr>
           </thead>
           <tbody>
-            {listaCompuestos.map((compuesto) => (
+            {compuestosList.map((compuesto) => (
               <tr
                 key={compuesto._id}
                 id={compuesto._id}
-                style={{ cursor: "default" }}
+                style={{ cursor: "default", userSelect: "none" }}
                 onClick={() => setIdx(compuesto._id)}
                 className={`text-uppercase ${
                   compuesto._id === idx ? "bg-info" : ""
@@ -147,16 +156,19 @@ function CompuestosTable({
                     onClick={() => asignarCompuesto(compuesto._id)}
                     title="ASIGNAR"
                     type="button"
-                    className="btn btn-warning btn-sm"
+                    className="btn btn-dark btn-sm"
                   >
                     <i className="bi bi-arrow-right-square"></i>
                   </button>
                 </td>
-                <td className="fs-5">{compuesto.name}</td>
-                <td className="fs-5 text-center">{compuesto.medida}</td>
-                <td className="fs-5 text-center">{compuesto.unidad}</td>
-                <td className="fs-5 text-end">${compuesto.price}</td>
-                <td className="fs-5 text-center">{compuesto.rendimiento}</td>
+                <td className="text-nowrap align-middle">{compuesto.name}</td>
+                <td className="text-center text-nowrap align-middle">
+                  {compuesto.unidad} {compuesto.medida}
+                </td>
+                <td className="text-end align-middle">${compuesto.price}</td>
+                <td className="text-center align-middle">
+                  {compuesto.rendimiento}
+                </td>
               </tr>
             ))}
           </tbody>

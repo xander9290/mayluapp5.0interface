@@ -10,6 +10,7 @@ import useCuenta from "../hooks/useCuenta";
 import useOtrosMedios from "../hooks/useOtrosMedios";
 import useTickets from "../hooks/useTickets";
 import useCaja from "../hooks/useCaja";
+import useAlmacen from "../hooks/useAlmacen";
 
 export const AppContext = createContext();
 
@@ -26,6 +27,8 @@ function AppProvider({ children }) {
     useProductos();
   const { compuestos, createCompuesto, updateCompuesto, deleteCompuesto } =
     useCompuestos();
+  const { almacenes, createAlmacen, updateAlmacen, deleteAlmacen } =
+    useAlmacen();
   const { clientes, createCliente, updateCliente, deleteCliente } =
     useClientes();
   const {
@@ -71,11 +74,16 @@ function AppProvider({ children }) {
     createProducto,
     updateProducto,
     deleteProducto,
-    // Compuestos
+    // compuestos
     compuestos,
     createCompuesto,
     updateCompuesto,
     deleteCompuesto,
+    // Almacen
+    almacenes,
+    createAlmacen,
+    updateAlmacen,
+    deleteAlmacen,
     // Clientes
     clientes,
     createCliente,

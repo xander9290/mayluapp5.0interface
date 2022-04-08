@@ -6,6 +6,7 @@ const initialCategoria = {
   name: "",
   fondo: "#FFFFFF",
   lastEdit: "",
+  compuestos: [],
 };
 function CategoriasForm({}) {
   const {

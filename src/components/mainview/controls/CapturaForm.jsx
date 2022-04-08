@@ -126,6 +126,7 @@ function CapturaForm({ show, onHide, showDetalle }) {
       price,
       dscto: 0,
       modificadores: [],
+      compuestos: [],
       producto_id: "miscelaneo",
       area_nota: "area3",
       contable: false,
@@ -216,7 +217,7 @@ function CapturaForm({ show, onHide, showDetalle }) {
     const updatedCompuestos = pdcto.compuestos.map((currentCompuesto) => {
       compuestos.map((compuesto) => {
         if (currentCompuesto._id === compuesto._id) {
-          currentCompuesto.medida = compuesto.medida * cant;
+          currentCompuesto.unidad = compuesto.unidad * cant;
           currentCompuesto.price = compuesto.price * cant;
         }
         return compuesto;
@@ -229,7 +230,20 @@ function CapturaForm({ show, onHide, showDetalle }) {
 
   const insertarModificador = (mod) => {
     const list = items;
+    const currentCompuestos = list[itemsIdx].compuestos;
     try {
+      if (mod.tipo === "sin") {
+        const updatedCompuestos = currentCompuestos.filter(
+          (compuesto) => compuesto._id !== mod.compuestoId
+        );
+        list[itemsIdx].compuestos = updatedCompuestos;
+      } else {
+        const getNewCompuesto = compuestos.find(
+          (compuesto) => compuesto._id === mod.compuestoId
+        );
+        const updatedCompuestos = [...currentCompuestos, getNewCompuesto];
+        list[itemsIdx].compuestos = updatedCompuestos;
+      }
       list[itemsIdx].modificadores.push(mod);
       if (parseInt(mod.price) > 0) {
         list[itemsIdx].importe = list[itemsIdx].importe + parseInt(mod.price);
@@ -533,7 +547,7 @@ function CapturaForm({ show, onHide, showDetalle }) {
                       key={producto._id}
                       onClick={() => capturarProducto(producto._id)}
                       style={{ backgroundColor: catBg }}
-                      className="btn text-uppercase border-1 border-dark text-dark fw-bold fs-5 me-1 mb-2 myBtnP"
+                      className="btn text-uppercase border-1 border-dark text-dark fw-bold fs-5 me-1 mb-2 text-wrap myBtnP"
                     >
                       {producto.name}
                     </button>

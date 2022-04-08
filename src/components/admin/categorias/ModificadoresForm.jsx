@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import { fechaISO, verifyExiste, formatoFecha } from "../../../helpers";
+import { v4 as uuidv4 } from "uuid";
 
 const initialModificador = {
   name: "",
@@ -8,6 +9,8 @@ const initialModificador = {
   createdAt: fechaISO(),
   lastEdit: "",
   id: null,
+  tipo: "",
+  compuestoId: "",
 };
 
 function ModificadoresForm({
@@ -15,7 +18,7 @@ function ModificadoresForm({
   setModificadores,
   selectedSubcategoria,
 }) {
-  const { session } = useContext(AppContext);
+  const { session, compuestos } = useContext(AppContext);
   const [modificador, setModificador] = useState(initialModificador);
   const [idx, setIdx] = useState("");
 
@@ -45,7 +48,7 @@ function ModificadoresForm({
     } else {
       const newMod = {
         ...modificador,
-        id: modificadores.length + 1,
+        id: uuidv4(),
         createdBy: session.operador,
       };
       if (verifyExiste(modificadores, modificador.name)) {
@@ -63,7 +66,6 @@ function ModificadoresForm({
     const findModificador = modificadores.find(
       (modificador) => modificador.id === id
     );
-    console.log(findModificador);
     setModificador(findModificador);
   };
 
@@ -94,31 +96,60 @@ function ModificadoresForm({
           {modificador.id && "<Modo Edición>"}
         </h5>
         <form onSubmit={handleSubmit}>
-          <div
-            style={{ pointerEvents: selectedSubcategoria }}
-            className="d-flex justify-content-between"
-          >
-            <input
-              className="form-control form-control-lg"
-              type="text"
-              name="name"
-              value={modificador.name}
-              onChange={handleModificador}
-              autoComplete="off"
-              required
-              placeholder="Descrupción"
-            />
-            <div className="input-group">
-              <span className="input-group-text">$</span>
+          <div style={{ pointerEvents: selectedSubcategoria }}>
+            <div className="mb-1 d-flex">
               <input
-                className="form-control form-control-lg"
-                type="number"
-                name="price"
-                min="0"
-                value={modificador.price}
+                className="form-control"
+                type="text"
+                name="name"
+                value={modificador.name}
                 onChange={handleModificador}
                 autoComplete="off"
+                required
+                placeholder="Descripción"
               />
+              <div className="input-group">
+                <span className="input-group-text">$</span>
+                <input
+                  className="form-control"
+                  type="number"
+                  name="price"
+                  min="0"
+                  value={modificador.price}
+                  onChange={handleModificador}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+            <div className="mb-1 d-flex">
+              <select
+                className="form-select text-uppercase"
+                name="tipo"
+                value={modificador.tipo}
+                onChange={handleModificador}
+                required
+              >
+                <option value="">Tipo</option>
+                <option value="mas">con</option>
+                <option value="sin">sin</option>
+              </select>
+              <select
+                className="form-select text-uppercase"
+                name="compuestoId"
+                value={modificador.compuestoId}
+                onChange={handleModificador}
+              >
+                <option value="">Compuesto</option>
+                {compuestos.map((compuesto) => (
+                  <option
+                    className="fs-5"
+                    key={compuesto._id}
+                    value={compuesto._id}
+                  >
+                    {compuesto.name}
+                  </option>
+                ))}
+              </select>
             </div>
             {modificador.id !== null ? (
               <button
@@ -126,7 +157,7 @@ function ModificadoresForm({
                 className="btn btn-primary mx-1"
                 type="submit"
               >
-                <i className="bi bi-pencil"></i>
+                Editar
               </button>
             ) : (
               <button
@@ -134,7 +165,7 @@ function ModificadoresForm({
                 className="btn btn-primary mx-1"
                 type="submit"
               >
-                <i className="bi bi-plus-circle"></i>
+                Agregar
               </button>
             )}
             <button
@@ -143,12 +174,15 @@ function ModificadoresForm({
               className="btn btn-warning"
               type="reset"
             >
-              <i className="bi bi-x-circle"></i>
+              Cancelar
             </button>
           </div>
         </form>
       </div>
-      <div className="card-body cards-body-admin p-1">
+      <div
+        style={{ height: "348px", overflow: "auto" }}
+        className="card-body p-1"
+      >
         <table className="table table-striped table-bordered text-dark">
           <thead>
             <tr className="text-center">
@@ -160,42 +194,53 @@ function ModificadoresForm({
               </th>
               <th scope="col">Descripción</th>
               <th scope="col">Precio</th>
+              <th className="text-nowrap" scope="col">
+                Compuesto Asociado
+              </th>
             </tr>
           </thead>
           <tbody>
-            {modificadores.map((modificador) => (
-              <tr
-                key={modificador.id}
-                style={{ cursor: "default" }}
-                onClick={() => setIdx(modificador.id)}
-                className={`text-uppercase ${
-                  idx === modificador.id ? "bg-info" : ""
-                }`}
-              >
-                <td>
-                  <button
-                    onClick={() => deleteModificador(modificador.id)}
-                    title="ELIMINAR"
-                    type="button"
-                    className="btn btn-danger btn-sm"
-                  >
-                    <i className="bi bi-trash"></i>
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={() => selectModificador(modificador.id)}
-                    title="EDITAR"
-                    type="button"
-                    className="btn btn-primary btn-sm ms-1"
-                  >
-                    <i className="bi bi-pencil"></i>
-                  </button>
-                </td>
-                <td className="text-dark">{modificador.name}</td>
-                <td className="text-end text-dark">${modificador.price}</td>
-              </tr>
-            ))}
+            {modificadores.map((modificador) => {
+              let compuesto = "sin compuesto";
+              let findCompuesto = compuestos.find(
+                (compuesto) => compuesto._id === modificador.compuestoId
+              );
+              if (findCompuesto) compuesto = findCompuesto.name;
+              return (
+                <tr
+                  key={modificador.id}
+                  style={{ cursor: "default" }}
+                  onClick={() => setIdx(modificador.id)}
+                  className={`text-uppercase ${
+                    idx === modificador.id ? "bg-info" : ""
+                  }`}
+                >
+                  <td>
+                    <button
+                      onClick={() => deleteModificador(modificador.id)}
+                      title="ELIMINAR"
+                      type="button"
+                      className="btn btn-danger btn-sm"
+                    >
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => selectModificador(modificador.id)}
+                      title="EDITAR"
+                      type="button"
+                      className="btn btn-primary btn-sm ms-1"
+                    >
+                      <i className="bi bi-pencil"></i>
+                    </button>
+                  </td>
+                  <td className="text-dark text-nowrap">{modificador.name}</td>
+                  <td className="text-end text-dark">${modificador.price}</td>
+                  <td className="text-nowrap text-dark">{compuesto}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

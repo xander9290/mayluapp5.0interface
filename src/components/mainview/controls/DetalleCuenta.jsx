@@ -25,7 +25,7 @@ function DetalleCuenta({
     const updatedCompuestos = pdcto.compuestos.map((currentCompuesto) => {
       compuestos.map((compuesto) => {
         if (currentCompuesto._id === compuesto._id) {
-          currentCompuesto.medida = compuesto.medida * cant;
+          currentCompuesto.unidad = compuesto.unidad * cant;
           currentCompuesto.price = compuesto.price * cant;
         }
         return compuesto;

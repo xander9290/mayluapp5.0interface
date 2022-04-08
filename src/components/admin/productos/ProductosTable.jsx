@@ -106,7 +106,7 @@ function ProductosTable({ setProducto }) {
               </th>
               <th scope="col">Descripción</th>
               <th scope="col">precio</th>
-              <th scope="col">ubicación</th>
+              <th scope="col">Subcategoría</th>
               <th scope="col">área</th>
               <th scope="col">contable</th>
               <th scope="col">compuestos</th>
@@ -157,7 +157,9 @@ function ProductosTable({ setProducto }) {
                       <i className="bi bi-pencil"></i>
                     </button>
                   </th>
-                  <td className="fs-5">{producto.name}</td>
+                  <td className="fs-5 text-nowrap align-middle">
+                    {producto.name}
+                  </td>
                   <td className="text-center fs-5">${producto.price}</td>
                   <td
                     style={{
@@ -166,12 +168,12 @@ function ProductosTable({ setProducto }) {
                     className="text-center"
                   >
                     {subcategoria.name && subcategoria.name}
-                    <small>
+                    {/* <small>
                       {" "}
                       {"<"}
                       {categoria.name && categoria.name}
                       {">"}
-                    </small>
+                    </small> */}
                   </td>
                   <td className="text-center">{producto.areaNota}</td>
                   <td className="text-center">

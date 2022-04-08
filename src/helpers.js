@@ -340,3 +340,18 @@ export const numeroALetras = (function () {
       );
   };
 })();
+
+export const genCodigo = (array = []) => {
+  let existe = false;
+  let newCodigo;
+  do {
+    newCodigo = Math.floor(1000 + Math.random() * 9000);
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].codigo === newCodigo) {
+        existe = true;
+        break;
+      }
+    }
+  } while (existe);
+  return newCodigo;
+};

@@ -1,27 +1,26 @@
 import { useState } from "react";
 
 function AsignarCompuesto({
-  productos,
-  updateProducto,
-  setListaCompuestos,
   listaCompuestos,
-  desAsginarCompuesto,
+  setListaCompuestos,
+  productos,
+  desAsignarCompuesto,
+  updateProducto,
 }) {
-  const [productoId, setProductoId] = useState("");
   const [err, setErr] = useState(null);
   const [producto, setProducto] = useState({});
 
-  const handleProductoId = (e) => {
-    if (e.target.value === "") {
-      limpiar();
-      return;
-    }
-    setProductoId(e.target.value);
-    const getProducto = productos.find(
+  const handleProducto = (e) => {
+    const findProducto = productos.find(
       (producto) => producto._id === e.target.value
     );
-    setProducto(getProducto);
-    setListaCompuestos(getProducto.compuestos);
+    if (findProducto) {
+      setProducto(findProducto);
+      setListaCompuestos(findProducto.compuestos);
+    } else {
+      setProducto({});
+      setListaCompuestos([]);
+    }
     setErr(null);
   };
 
@@ -46,12 +45,13 @@ function AsignarCompuesto({
 
   return (
     <form onSubmit={handleSubmit} className="card bg-white">
-      <div className="card-header p-1">
-        {setErr && <small className="text-form text-danger fs-6">{err}</small>}
+      {setErr && <small className="text-form text-danger fs-6">{err}</small>}
+      <div className="card-header d-flex p-1">
         <select
-          onChange={handleProductoId}
+          onChange={handleProducto}
           className="form-select text-uppercase"
           name="productoId"
+          required
         >
           <option value="">Producto</option>
           {productos.map((producto) => (
@@ -60,9 +60,15 @@ function AsignarCompuesto({
             </option>
           ))}
         </select>
+        <button type="submit" className="btn btn-primary mx-1">
+          <i className="bi bi-plus-circle"></i>
+        </button>
+        <button onClick={limpiar} type="reset" className="btn btn-warning">
+          <i className="bi bi-x-circle"></i>
+        </button>
       </div>
       <div
-        style={{ height: "400px", overflowY: "auto" }}
+        style={{ height: "450px", overflowY: "auto" }}
         className="card-body p-1"
       >
         <ul className="list-group">
@@ -76,7 +82,7 @@ function AsignarCompuesto({
                 {compuesto.name} ${compuesto.price}
               </span>
               <button
-                onClick={() => desAsginarCompuesto(compuesto._id)}
+                onClick={() => desAsignarCompuesto(compuesto._id)}
                 type="button"
                 className="btn btn-danger"
               >
@@ -86,17 +92,11 @@ function AsignarCompuesto({
           ))}
         </ul>
       </div>
-      <div className="card-footer p-1">
-        <button type="submit" className="btn btn-primary btn-lg mx-1">
-          Asginar
-        </button>
-        <button
-          onClick={limpiar}
-          type="reset"
-          className="btn btn-warning btn-lg"
-        >
-          Limpiar
-        </button>
+      <div className="card-footer p-1 text-end">
+        <h5>
+          Costo del producto: $
+          {listaCompuestos.reduce((prev, ac) => prev + ac.price, 0)}
+        </h5>
       </div>
     </form>
   );

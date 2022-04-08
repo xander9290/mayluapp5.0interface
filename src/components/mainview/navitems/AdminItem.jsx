@@ -41,7 +41,7 @@ function AdminItem() {
             href="#"
             className="dropdown-item fs-5 py-2"
           >
-            Productos
+            Almacén
           </a>
         </li>
         <li>
