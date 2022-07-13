@@ -261,7 +261,7 @@ function NotaCliente({ cuenta, show, onHide }) {
               </p>
             </strong>
             <small id="repartoTel">
-              <span>tel: {cliente.tel}</span>
+              <p style={{ fontSize: "18px" }}>tel: {cliente.tel}</p>
               {cuenta.repartidor && (
                 <span id="reparto">Reparto: {cuenta.repartidor}</span>
               )}
